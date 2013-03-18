@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Goodybag.com</title>
+  <link media="all" rel="stylesheet" href="css/all.css">
+  <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery.main.js"></script>
+  <script type="text/javascript" src="js/handlebars.js"></script>
+  <!--[if IE]><script type="text/javascript" src="js/ie.js"></script><![endif]-->
+  <script>
+    var config = (function(){
+      var exports = {
+        defaults: {
+
+        }
+
+      , dev: {
+          baseUrl: 'http://localhost:3000/v1'
+        }
+
+      , dev: {
+          baseUrl: 'http://magic.goodybag.com/v1'
+        }
+      };
+
+      for (var key in exports.default){
+        if (!(key in exports.dev)) exports.dev[key]   = exports.default[key];
+        if (!(key in exports.prod)) exports.prod[key] = exports.default[key];
+      }
+
+      return exports.dev;
+    })();
+
+    var utils = (function(){
+      var exports = {};
+
+      exports.dom = $;
+      exports.domready = $;
+      exports.compile = Handlebars.compile;
+      
+      exports.ajax = function(method, url, data, callback){
+        switch (method){
+          case "get":     method = "GET";     break;
+          case "post":    method = "POST";    break;
+          case "del":     method = "DELETE";  break;
+          case "put":     method = "PUT";     break;
+          case "patch":   method = "PUT";     break;
+        }
+
+        if (typeof data === "function"){
+          callback = data;
+          data = {};
+        }
+
+        if (method === "GET"){
+          url += utils.queryParams(data);
+          data = null;
+        }
+
+        var ajax = {
+          type: method
+        , url: url
+        , xhrFields: { withCredentials: true }
+        , crossDomain: true
+        , success: function(results){
+            results = results || {};
+            callback && callback(results.error, results.data, results.meta);
+          }
+        , error: function(error, results, res, r){
+            callback && callback(error.responseText ? JSON.parse(error.responseText).error : error);
+          }
+        };
+
+        if (data) ajax.data = data;
+
+        $.ajax(ajax);
+      };
+
+      exports.get = function(url, params, callback){
+        exports.ajax('get', url, data, callback);
+        return exports
+      };
+
+      exports.post = function(url, data, callback){
+        exports.ajax('post', url, data, callback);
+        return exports
+      };
+
+      exports.put = function(url, data, callback){
+        exports.ajax('put', url, data, callback);
+        return exports
+      };
+
+       exports.patch = function(url, data, callback){
+        exports.ajax('patch', url, data, callback);
+        return exports
+      };
+
+      exports.delete = function(url, data, callback){
+        exports.ajax('delete', url, data, callback);
+        return exports
+      };
+
+      exports.queryParams = function(data){
+        if (typeof data !== "object") return "";
+        var params = "?";
+        for (var key in data){
+          params += key + "=" + data[key] + "&";
+        }
+        return params.substring(0, params.length - 1);
+      };
+
+
+      exports.noop = function(){};
+
+      return exports;
+    })();
+
+    var api = (function(){
+      var exports = {};
+
+      exports.get = function(url, params, callback){
+        utils.get(config.baseUrl + url, params, callback);
+      };
+
+      exports.post = function(url, data, callback){
+        utils.post(config.baseUrl + url, data, callback);
+      };
+
+      exports.put = function(url, data, callback){
+        utils.put(config.baseUrl + url, data, callback);
+      };
+
+      exports.patch = function(url, data, callback){
+        utils.patch(config.baseUrl + url, data, callback);
+      };
+
+      exports.delete = function(url, callback){
+        utils.post(config.baseUrl + url, callback);
+      };
+
+      exports.products = {};
+
+      exports.products.list = function(options, callback){
+        if (typeof options === "function"){
+          callback = options;
+          options = null;
+        }
+
+        exports.get('/products', options, callback);
+      };
+
+      exports.products.get = function(id, options, callback){
+        exports.get('/products/' + id, options, callback);
+      };
+
+      exports.products.create = function(product, callback){
+        exports.post('/products', product, callback);
+      };
+
+      exports.products.update = function(id, product, callback){
+        if (typeof id === "object"){
+          callback = product;
+          product = id;
+          id = product.id;
+          delete product.id;
+        }
+
+        exports.put('/products/' + id, product, callback);
+      };
+
+      exports.products.delete = function(id, callback){
+        exports.delete('/products/' + id, callback);
+      };
+
+      return exports;
+    })();
+
+    var templates = (function(){
+      var exports = {};
+
+      exports.product = [
+        '<li data-id="{{id}}">'
+        , '<header class="heading">'
+          , '<h2>{{name}}</h2>'
+          , '<a href="#" class="hash">@ {{businessName}}</a>'
+        , '</header>'
+        , '<img src="{{photoUrl}}" alt="{{description}}">'
+        , '<ul class="item-buttons">'
+          , '<li><a href="#" class="want{{#if userWants}} active{{/if}}">want</a></li>'
+          , '<li><a href="#" class="like{{#if userLikes}} active{{/if}}">like it</a></li>'
+          , '<li><a href="#" class="tried{{#if userTried}} active{{/if}}">tried</a></li>'
+        , '</ul>'
+        , '<span class="like-counter">{{likes}}</span>'
+      , '</li>'
+      ].join('\n');
+
+      return exports;
+    })();
+
+    var user = (function(){
+      var exports = {};
+
+      exports.attributes = {};
+
+      exports.loggedIn = function(callback){
+        if (exports.attributes.id) return callback(null, true);
+
+        api.session.get(function(error, result){
+          if (error) return callback(error);
+
+          if (result && result.id) exports.attributes = result;
+
+          callback(null, !!exports.attributes.id);
+        });
+      };
+
+      exports.auth = function(email, password, callback){
+        api.session.create(email, password, function(error, result){
+          if (error) return callback(error);
+
+          if 
+        });
+      };
+
+      exports.oauth = function(callback){
+
+      };
+
+      exports.logout = function(callback){
+
+      };
+
+      return exports;
+    })();
+
+    var app = (function(){
+      var
+        exports = {}
+      , productsOptions = { offset: 0, limit: 30 }
+      ;
+
+      exports.init = function(){
+        exports.compileTemplates();
+
+        utils.domready(function(){
+          // I could probably use async to load in products and wait for dom at the same time
+          // But oh well
+          exports.loadProducts();
+        });
+      };
+
+      exports.compileTemplates = function(tmpl){
+        for (var key in tmpl){
+          if (typeof tmpl[key] === "object") tmpl[key] = exports.compileTemplates(tmpl[key]);
+          else tmpl[key] = utils.compile(tmpl[key]);
+        }
+      };
+
+      exports.loadProducts = function(callback){
+        callback = callback || utils.noop;
+
+        api.products.list(productOptions, function(error, products){
+          if (error) return callback(error);
+
+          exports.loadProductsWithData(products);
+        });
+      };
+
+      exports.loadProductsWithData = function(products){
+        var $list = utils.dom('#products-list'), html = "";
+
+        for (var i = 0, l = products.length; i < l; ++i){
+          html += templates.product(products[i]);
+        }
+
+        $list.html(html);
+
+        exports.applyProductsEvents($list);
+      };
+
+      exports.applyProductsEvents = function($list){
+        $list = $list || utils.dom('#products-list');
+
+        $list.find('.item-buttons > a').click(function(e){
+          e.preventDefault();
+
+          // Ensure we're logged in, if not display the register modal
+          user.loggedIn(function(error, result){
+            if (error) return alert(error.message);
+
+            // Display Modal
+            // if (!result) return exports.openRegisterModal();
+
+            var $el = $(e.target), feelings = {};
+
+            // Determine action
+            var action = (
+              $el.hasClass('like') ? 'isLiked'  : (
+              $el.hasClass('want') ? 'isWanted' : (
+              $el.hasClass('try')  ? 'isTried'  : false
+            )));
+
+            // Somebody messed up the template or something
+            if (!action) return alert("Something went wrong :(");
+
+            if ($el.hasClass)
+
+            api.products[action]
+          });
+        });
+      }
+    });
+
+    app.init();
+  </script>
+</head>
+<body>
+  <div id="wrapper">
+    <header id="header">
+      <div class="holder">
+        <h1 class="logo"><a href="#">Goodybag</a></h1>
+        <div class="buttons">
+          <a href="#" class="btn">Sign Up</a>
+          <a href="#" class="btn">Log In</a>
+          <span>or</span>
+          <a href="#" class="btn-facebook">Log In</a>
+        </div>
+        <nav id="nav">
+          <ul>
+            <li><a href="#" class="works">How it Works</a></li>
+            <li><a href="#" class="locations">Locations</a></li>
+            <li><a href="#" class="charities">Charities</a></li>
+            <li><a href="#" class="about">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="gallery">
+      <div class="holder">
+        <div class="slideset">
+          <div class="slide slide-1">
+            <h2>Goodybag</h2>
+            <p>Earn rewards and support charities just by<br>shopping at your favorite businesses. </p>
+            <a href="#" class="btn">Get Started</a>
+            <img src="images/slide-1.png" alt="iamge description">
+          </div>
+          <div class="slide slide-2">
+            <img src="images/slide-2.png" alt="image description">
+            <div class="frame">
+              <a href="#" class="btn">Download the app</a>
+              <p>Explore, collect and earn rewards with our new app!</p>
+              <a href="#" class="app-store">Available on the App Store</a>
+            </div>
+          </div>
+          <div class="slide slide-3">
+            <img src="images/slide-3.png" alt="image description">
+            <div class="frame">
+              <h2>Check out the <strong>Instore tablet</strong></h2>
+              <p>Earn rewards and browse<br>featured items around town!</p>
+              <a href="#" class="btn">View Locations</a>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="btn-prev">prev</a>
+        <a href="#" class="btn-next">next</a>
+      </div>
+    </div>
+    <section id="main">
+      <div class="holder">
+        <ul class="item-list" id="products-list"></ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
