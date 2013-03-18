@@ -305,7 +305,8 @@
             // Somebody messed up the template or something
             if (!action) return alert("Something went wrong :(");
 
-            if ($el.hasClass)
+            // Update feelings and active class on element
+            $el[((feelings[action] = !$el.hasClass('active')) ? 'add' : 'remove') + 'Class']('active');
 
             api.products[action]
           });
