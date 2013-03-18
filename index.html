@@ -38,7 +38,7 @@
       exports.dom = $;
       exports.domready = $;
       exports.compile = Handlebars.compile;
-      
+
       exports.ajax = function(method, url, data, callback){
         switch (method){
           case "get":     method = "GET";     break;
@@ -220,7 +220,10 @@
         api.session.create(email, password, function(error, result){
           if (error) return callback(error);
 
-          if 
+          if (!result.id) return callback({ message: "Something went wrong :( " });
+
+          exports.attributes = result;
+          callback(null, exports.attributes);
         });
       };
 
@@ -229,7 +232,11 @@
       };
 
       exports.logout = function(callback){
+        api.session.delete(function(error){
+          if (error) return callback(error);
 
+          exports.attributes = {};
+        });
       };
 
       return exports;
