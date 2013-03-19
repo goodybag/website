@@ -19,7 +19,7 @@
           baseUrl: 'http://localhost:3000/v1'
         }
 
-      , dev: {
+      , prod: {
           baseUrl: 'http://magic.goodybag.com/v1'
         }
       };
@@ -78,7 +78,7 @@
       };
 
       exports.get = function(url, params, callback){
-        exports.ajax('get', url, data, callback);
+        exports.ajax('get', url, params, callback);
         return exports
       };
 
@@ -140,6 +140,8 @@
         utils.post(config.baseUrl + url, callback);
       };
 
+
+
       exports.products = {};
 
       exports.products.list = function(options, callback){
@@ -170,8 +172,28 @@
         exports.put('/products/' + id, product, callback);
       };
 
+      exports.products.feelings = function(id, feelings, callback){
+        exports.put('/products/' + id + '/feelings', feelings, callback);
+      };
+
       exports.products.delete = function(id, callback){
         exports.delete('/products/' + id, callback);
+      };
+
+
+
+      exports.session = {};
+
+      exports.session.get = function(callback){
+        exports.get('/session', callback);
+      };
+
+      exports.session.create = function(data, callback){
+        exports.post('/session', data, callback);
+      };
+
+      exports.session.delete = function(callback){
+        exports.delete('/session', callback);
       };
 
       return exports;
@@ -181,12 +203,12 @@
       var exports = {};
 
       exports.product = [
-        '<li data-id="{{id}}">'
+        '<li data-id="{{id}}" class="product-list-item">'
         , '<header class="heading">'
-          , '<h2>{{name}}</h2>'
+          , '<h2>{{#if name}}{{name}}{{else}}Awesome Product{{/if}}</h2>'
           , '<a href="#" class="hash">@ {{businessName}}</a>'
         , '</header>'
-        , '<img src="{{photoUrl}}" alt="{{description}}">'
+        , '<img src="{{photoUrl}}/convert?w=240&h=240" alt="{{description}}" onerror="this.src=\'images/img-\' + (Math.floor(Math.random() * 10) + 1) + \'.jpg\'">'
         , '<ul class="item-buttons">'
           , '<li><a href="#" class="want{{#if userWants}} active{{/if}}">want</a></li>'
           , '<li><a href="#" class="like{{#if userLikes}} active{{/if}}">like it</a></li>'
@@ -245,11 +267,11 @@
     var app = (function(){
       var
         exports = {}
-      , productsOptions = { offset: 0, limit: 30 }
+      , productsOptions = { offset: 0, limit: 30, sort: 'random', hasPhoto: true }
       ;
 
       exports.init = function(){
-        exports.compileTemplates();
+        exports.compileTemplates(templates);
 
         utils.domready(function(){
           // I could probably use async to load in products and wait for dom at the same time
@@ -268,7 +290,7 @@
       exports.loadProducts = function(callback){
         callback = callback || utils.noop;
 
-        api.products.list(productOptions, function(error, products){
+        api.products.list(productsOptions, function(error, products){
           if (error) return callback(error);
 
           exports.loadProductsWithData(products);
@@ -290,7 +312,10 @@
       exports.applyProductsEvents = function($list){
         $list = $list || utils.dom('#products-list');
 
-        $list.find('.item-buttons > a').click(function(e){
+        // Apply PSD2HTML stuff
+        initSlideBlocks();
+
+        $list.find('.item-buttons a').click(function(e){
           e.preventDefault();
 
           // Ensure we're logged in, if not display the register modal
@@ -300,26 +325,34 @@
             // Display Modal
             // if (!result) return exports.openRegisterModal();
 
-            var $el = $(e.target), feelings = {};
+            var
+              $el       = utils.dom(e.target)
+            , pid       = $el.parents('.product-list-item').data('id')
+            , feelings  = {}
 
-            // Determine action
-            var action = (
-              $el.hasClass('like') ? 'isLiked'  : (
-              $el.hasClass('want') ? 'isWanted' : (
-              $el.hasClass('try')  ? 'isTried'  : false
-            )));
+              // Determine action
+            , action = (
+                $el.hasClass('like') ? 'isLiked'  : (
+                $el.hasClass('want') ? 'isWanted' : (
+                $el.hasClass('tried')  ? 'isTried'  : false
+              )))
+            ;
 
-            // Somebody messed up the template or something
+            // Somebody must have messed up the template or something
             if (!action) return alert("Something went wrong :(");
 
             // Update feelings and active class on element
             $el[((feelings[action] = !$el.hasClass('active')) ? 'add' : 'remove') + 'Class']('active');
 
-            api.products[action]
+            api.products.feelings(pid, feelings, function(error){
+              if (error) return alert(error.message);
+            });
           });
         });
       }
-    });
+
+      return exports;
+    })();
 
     app.init();
   </script>

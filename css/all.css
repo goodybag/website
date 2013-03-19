@@ -5,7 +5,7 @@ body{
 	font:20px/26px Arial, Helvetica, sans-serif;
 }
 header, footer, article, section, hgroup, nav, figure, aside { display: block; }
-img{border-style:none;} 
+img{border-style:none;}
 a{
 	text-decoration:none;
 	color:#3a3e3f;
@@ -164,25 +164,25 @@ form, fieldset{
 	background-position:0 -2px;
 	width:117px;
 }
-#nav .active .works, 
+#nav .active .works,
 #nav .works:hover{background-position:0 -27px;}
 #nav .locations{
 	background-position:-177px -2px;
 	width:87px;
 }
-#nav .active .locations, 
+#nav .active .locations,
 #nav .locations:hover{background-position:-177px -27px;}
 #nav .charities{
 	background-position:-324px -2px;
 	width:79px;
 }
-#nav .active .charities, 
+#nav .active .charities,
 #nav .charities:hover{background-position:-324px -27px;}
 #nav .about{
 	background-position:-455px -2px;
 	width:61px;
 }
-#nav .active .about, 
+#nav .active .about,
 #nav .about:hover{background-position:-455px -27px;}
 #main{
 	padding:14px 0 0;
@@ -296,7 +296,8 @@ form, fieldset{
 	display:block;
 	background:#fff url(../images/bg-btn.gif) repeat-x 0 100%;
 }
-.item-buttons a:hover{
+.item-buttons a:hover,
+.item-buttons a.active{
 	background:#dbdbdb;
 	text-decoration:none;
 }
@@ -308,7 +309,8 @@ form, fieldset{
 	width:18px;
 	height:19px;
 }
-.item-buttons .want:hover:before{background-position:-11px -4px;}
+.item-buttons .want:hover:before,
+.item-buttons .want.active:before{background-position:-11px -4px;}
 .item-buttons .like:before{
 	display:block;
 	margin:2px auto 1px;
@@ -317,7 +319,8 @@ form, fieldset{
 	width:18px;
 	height:19px;
 }
-.item-buttons .like:hover:before{background-position:-92px -4px;}
+.item-buttons .like:hover:before,
+.item-buttons .like.active:before{background-position:-92px -4px;}
 .item-buttons .tried:before{
 	display:block;
 	margin:2px auto 1px;
@@ -326,8 +329,9 @@ form, fieldset{
 	width:19px;
 	height:19px;
 }
-.item-buttons .tried:hover:before{background-position:-172px -4px;}
-.item-list > li:hover .item-buttons, 
+.item-buttons .tried:hover:before,
+.item-buttons .tried.active:before{background-position:-172px -4px;}
+.item-list > li:hover .item-buttons,
 .item-list > li:hover .heading{display:block;}
 .gallery{
 	position:relative;
@@ -342,7 +346,7 @@ form, fieldset{
 	overflow:hidden;
 	height:390px;
 }
-.gallery .btn-prev, 
+.gallery .btn-prev,
 .gallery .btn-next{
 	position:absolute;
 	top:157px;
