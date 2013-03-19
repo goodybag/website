@@ -323,7 +323,7 @@
             if (error) return alert(error.message);
 
             // Display Modal
-            // if (!result) return exports.openRegisterModal();
+            if (!result) return alert('Please Login');
 
             var
               $el       = utils.dom(e.target)
