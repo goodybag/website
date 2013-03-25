@@ -6,12 +6,25 @@
 
   app.init = function(){
     app.compileTemplates(templates);
+  };
 
-    utils.domready(function(){
-      // I could probably use async to load in products and wait for dom at the same time
-      // But oh well
-      app.loadProducts();
-    });
+  app.loadModals = function(){
+    utils.dom(document.body).append(
+      templates.loginModal()
+    , templates.signUpModal()
+    );
+
+    app.$loginForm = utils.dom('#login-form');
+    app.$registerForm = utils.dom('#register-form');
+
+    $loginForm.submit(app.onLoginSubmit);
+    $registerForm.submit(app.onRegisterSubmit);
+
+    $loginForm.find('.btn-facebook').click(app.onFacebookBtnClick);
+    $registerForm.find('.btn-facebook').click(app.onFacebookBtnClick);
+
+    // Call PSD2HTML function
+    initLightbox()
   };
 
   app.compileTemplates = function(tmpl){
@@ -84,4 +97,18 @@
       });
     });
   }
+
+  app.onLoginSubmit = function(e){
+    e.preventDefault();
+
+    if (!user.isLoggedIn)
+  };
+
+  app.onRegisterSubmit = function(e){
+    e.preventDefault();
+  };
+
+  app.onFacebookBtnClick = function(e){
+    e.preventDefault();
+  };
 })();

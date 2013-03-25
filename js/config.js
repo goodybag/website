@@ -1,11 +1,14 @@
-(function(){
-  var config = window.config = window.config || {
+(function(exports){
+  var config = exports.config = exports.config || {
     defaults: {
 
     }
 
   , dev: {
       baseUrl: 'http://localhost:3000/v1'
+    , oauth: {
+        redirectUrl: 'http://localhost:8081/'
+      }
     }
 
   , prod: {
@@ -17,4 +20,6 @@
     if (!(key in config.dev)) config.dev[key]   = config.default[key];
     if (!(key in config.prod)) config.prod[key] = config.default[key];
   }
-})();
+
+  exports.config = config.dev;
+})(window);

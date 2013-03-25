@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Goodybag.com</title>
+
   <link media="all" rel="stylesheet" href="css/all.css">
+  <link media="all" rel="stylesheet" href="css/fancybox.css">
+
   <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="js/jquery.main.js"></script>
   <script type="text/javascript" src="js/handlebars.js"></script>
@@ -18,6 +21,11 @@
   <!--[if IE]><script type="text/javascript" src="js/ie.js"></script><![endif]-->
   <script>
     app.init();
+
+    utils.domready(function(){
+      app.loadProducts();
+      app.loadModals();
+    });
   </script>
 </head>
 <body>
@@ -43,8 +51,8 @@
           </ul>
         </nav>
         <div class="buttons">
-          <a href="#" class="btn">Sign Up</a>
-          <a href="#" class="btn">Log In</a>
+          <a href="#facebook-popup-2" class="btn lightbox">Sign Up</a>
+          <a href="#facebook-popup" class="btn lightbox">Log In</a>
           <span>or</span>
           <a href="#" class="btn-facebook">Log In</a>
         </div>
@@ -56,7 +64,7 @@
           <div class="slide slide-1">
             <h2>Goodybag</h2>
             <p>Earn rewards and support charities just by<br>shopping at your favorite businesses. </p>
-            <a href="#" class="btn">Get Started</a>
+            <a href="#facebook-popup-2" class="btn lightbox">Get Started</a>
             <img src="images/slide-1.png" alt="iamge description">
           </div>
           <div class="slide slide-2">
@@ -72,7 +80,7 @@
             <div class="frame">
               <h2>Check out the <strong>Instore tablet</strong></h2>
               <p>Earn rewards and browse<br>featured items around town!</p>
-              <a href="#" class="btn">View Locations</a>
+              <a href="locations.html" class="btn">View Locations</a>
             </div>
           </div>
         </div>

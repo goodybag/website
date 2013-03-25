@@ -1,5 +1,5 @@
-(function(){
-  var api = window.api = window.api || {};
+(function(exports){
+  var api = exports.api = exports.api || {};
 
   api.get = function(url, params, callback){
     utils.get(config.baseUrl + url, params, callback);
@@ -76,4 +76,12 @@
   api.session.delete = function(callback){
     api.delete('/session', callback);
   };
-})();
+
+  api.session.oauth = function(code, callback){
+    api.post('/oauth', { code: code, group: 'consumer' }, callback);
+  };
+
+  api.session.getOauthUrl = function(url, service, callback){
+    api.get('/oauth', { redirect_uri: url, service: service }, callback);
+  };
+})(window);
