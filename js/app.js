@@ -6,6 +6,25 @@
 
   app.init = function(){
     app.compileTemplates(templates);
+    app.checkForAccessCode();
+  };
+
+  app.checkForAccessCode = function(){
+    if (window.location.href.indexOf('code=') == -1) return;
+
+    user.oauth(funct)
+  };
+
+  app.openRegisterModal = function(){
+    utils.dom('a[href="#facebook-popup-2"]').eq(0).trigger('click');
+  };
+
+  app.openLoginModal = function(){
+    utils.dom('a[href="#facebook-popup"]').eq(0).trigger('click');
+  };
+
+  app.closeModals = function(){
+    jQuery.fancybox.close();
   };
 
   app.loadModals = function(){
@@ -17,11 +36,11 @@
     app.$loginForm = utils.dom('#login-form');
     app.$registerForm = utils.dom('#register-form');
 
-    $loginForm.submit(app.onLoginSubmit);
-    $registerForm.submit(app.onRegisterSubmit);
+    app.$loginForm.submit(app.onLoginSubmit);
+    app.$registerForm.submit(app.onRegisterSubmit);
 
-    $loginForm.find('.btn-facebook').click(app.onFacebookBtnClick);
-    $registerForm.find('.btn-facebook').click(app.onFacebookBtnClick);
+    app.$loginForm.find('.btn-facebook').click(app.onFacebookBtnClick);
+    app.$registerForm.find('.btn-facebook').click(app.onFacebookBtnClick);
 
     // Call PSD2HTML function
     initLightbox()
@@ -70,7 +89,7 @@
         if (error) return alert(error.message);
 
         // Display Modal
-        if (!result) return alert('Please Login');
+        if (!result) return app.openLoginModal();
 
         var
           $el       = utils.dom(e.target)
@@ -101,11 +120,52 @@
   app.onLoginSubmit = function(e){
     e.preventDefault();
 
-    if (!user.isLoggedIn)
+    var
+      $email    = app.$loginForm.find('#user')
+    , $password = app.$loginForm.find('#pass')
+    , email     = $email.val()
+    , password  = $password.val()
+    ;
+
+    $password.val("");
+
+    user.isLoggedIn(function(error, isLoggedIn){
+      if (error && error.message) return alert(error.message);
+      if (error) return alert(error);
+
+      if (isLoggedIn) return alert("You're alraedy logged in!");
+
+      user.auth(email, password, function(error, result){
+        if (error && error.message) return alert(error.message);
+        if (error) return alert(error);
+
+        app.closeModals();
+      });
+    });
   };
 
   app.onRegisterSubmit = function(e){
     e.preventDefault();
+
+    var $password = app.$registerForm.find('#pass-1');
+
+    if ($password.val() != app.$registerForm.find('#pass-2').val())
+      return alert("Passwords Must match"), app.$registerForm.find('input[type="password"]').val("");
+
+    var data = {
+      email:          app.$registerForm.find('#email').val()
+    , screenName:     app.$registerForm.find('#user-2').val()
+    , password:       $password.val()
+    };
+
+    app.$registerForm.find('input[type="password"]').val("");
+
+    user.register(data, function(error, result){
+      if (error && error.message) return alert(error.message);
+      if (error) return alert(error);
+
+      app.closeModals();
+    });
   };
 
   app.onFacebookBtnClick = function(e){
