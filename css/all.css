@@ -352,7 +352,7 @@ button::-moz-focus-inner{
 	display:block;
 	background:#fff url(../images/bg-btn.gif) repeat-x 0 100%;
 }
-.item-buttons a:hover{
+.item-buttons a:hover, .item-buttons a.active{
 	background:#dbdbdb;
 	text-decoration:none;
 }
@@ -365,7 +365,7 @@ button::-moz-focus-inner{
 	height:19px;
 }
 .item-buttons .want:hover:before,
-.item-buttons a.want.active {background-position:-11px -4px;}
+.item-buttons .want.active:before {background-position:-11px -4px;}
 .item-buttons .like:before{
 	display:block;
 	margin:2px auto 1px;
@@ -375,7 +375,7 @@ button::-moz-focus-inner{
 	height:19px;
 }
 .item-buttons .like:hover:before,
-.item-buttons a.like.active {background-position:-92px -4px;}
+.item-buttons a.like.active:before {background-position:-92px -4px;}
 .item-buttons .tried:before{
 	display:block;
 	margin:2px auto 1px;
@@ -385,7 +385,7 @@ button::-moz-focus-inner{
 	height:19px;
 }
 .item-buttons .tried:hover:before,
-.item-buttons a.tried.active {background-position:-172px -4px;}
+.item-buttons a.tried.active:before {background-position:-172px -4px;}
 .item-list > li:hover .item-buttons, 
 .item-list > li:hover .heading{display:block;}
 .gallery{
