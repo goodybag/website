@@ -1,6 +1,6 @@
-(function(){
+(function(exports){
   var
-    app = window.app = window.app || {}
+    app = exports.app = exports.app || {}
   , productsOptions = { offset: 0, limit: 30, sort: 'random', hasPhoto: true }
   ;
 
@@ -203,4 +203,4 @@
     // Direct to coming soon page?
     alert('logged in!');
   };
-})();
+})(window);
