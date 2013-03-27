@@ -6,7 +6,7 @@ body{
 	font:20px/26px Arial, Helvetica, sans-serif;
 }
 header, footer, article, section, hgroup, nav, figure, aside { display: block; }
-img{border-style:none;} 
+img{border-style:none;}
 a{
 	text-decoration:none;
 	color:#3a3e3f;
@@ -386,7 +386,7 @@ button::-moz-focus-inner{
 }
 .item-buttons .tried:hover:before,
 .item-buttons a.tried.active:before {background-position:-172px -4px;}
-.item-list > li:hover .item-buttons, 
+.item-list > li:hover .item-buttons,
 .item-list > li:hover .heading{display:block;}
 .gallery{
 	position:relative;
@@ -401,7 +401,7 @@ button::-moz-focus-inner{
 	overflow:hidden;
 	height:390px;
 }
-.gallery .btn-prev, 
+.gallery .btn-prev,
 .gallery .btn-next{
 	position:absolute;
 	top:157px;
@@ -718,14 +718,24 @@ button::-moz-focus-inner{
 	width:940px;
 	margin:0 auto 50px;
 }
+#fixed-form{
+  z-index: 98;
+  position: absolute;
+}
+#fixed-form.bg-fix{background:url(../images/bg-body.png);}
 .form-box{
-	margin:0 0 55px;
-	overflow:hidden;
-	padding:6px 0;
-	border:1px solid #bab7b5;
-	box-shadow:0 3px 5px 0 rgba(0,0,0,0.15), inset 0 2px 2px 0 rgba(255,255,255,1);
-	background:#f1f1f1;
-	border-radius:7px;
+  overflow:hidden;
+  padding:6px 0;
+  border:1px solid #bab7b5;
+  box-shadow:0 3px 5px 0 rgba(0,0,0,0.15), inset 0 2px 2px 0 rgba(255,255,255,1);
+  background:#f1f1f1;
+  border-radius:7px;
+  margin:25px 0 55px;
+  width: 938px;
+}
+.fixed-help{
+  height: 91px;
+  margin:0 0 55px;
 }
 .form-box form{
 	float:left;
@@ -1105,7 +1115,7 @@ button::-moz-focus-inner{
 	color:#999;
 	outline:none;
 }
-.biz-form .text .input-placeholder-text, 
+.biz-form .text .input-placeholder-text,
 .biz-form .textarea .input-placeholder-text{
 	position:absolute;
 	left:0;
