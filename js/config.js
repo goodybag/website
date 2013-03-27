@@ -7,12 +7,15 @@
   , dev: {
       baseUrl: 'http://localhost:3000/v1'
     , oauth: {
-        redirectUrl: 'http://localhost:8081/'
+        redirectUrl: 'http://localhost:8081'
       }
     }
 
   , prod: {
       baseUrl: 'http://magic.goodybag.com/v1'
+    , oauth: {
+        redirectUrl: 'http://www.goodybag.com'
+      }
     }
   };
 

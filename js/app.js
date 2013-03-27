@@ -9,10 +9,23 @@
     app.checkForAccessCode();
   };
 
+  app.headerEvents = function(){
+    utils.dom('#header .btn-facebook').click(app.onFacebookBtnClick);
+  };
+
   app.checkForAccessCode = function(){
     if (window.location.href.indexOf('code=') == -1) return;
 
-    user.oauth(funct)
+    var code = window.location.href.split('code=')[1];
+    code = code.split('/#_=_')[0];
+    alert(code);
+
+    user.oauth(code, function(error){
+      if (error && error.message) alert(error.message);
+      if (error) alert(error);
+
+      app.onUserLogin();
+    });
   };
 
   app.openRegisterModal = function(){
@@ -39,8 +52,7 @@
     app.$loginForm.submit(app.onLoginSubmit);
     app.$registerForm.submit(app.onRegisterSubmit);
 
-    app.$loginForm.find('.btn-facebook').click(app.onFacebookBtnClick);
-    app.$registerForm.find('.btn-facebook').click(app.onFacebookBtnClick);
+    utils.dom('.popup-holder .btn-facebook').click(app.onFacebookBtnClick);
 
     // Call PSD2HTML function
     initLightbox()
@@ -93,14 +105,15 @@
 
         var
           $el       = utils.dom(e.target)
-        , pid       = $el.parents('.product-list-item').data('id')
+        , $parent   = $el.parents('.product-list-item')
+        , pid       = $parent.data('id')
         , feelings  = {}
 
           // Determine action
         , action = (
-            $el.hasClass('like') ? 'isLiked'  : (
-            $el.hasClass('want') ? 'isWanted' : (
-            $el.hasClass('tried')  ? 'isTried'  : false
+            $el.hasClass('like')  ? 'isLiked'  : (
+            $el.hasClass('want')  ? 'isWanted' : (
+            $el.hasClass('tried') ? 'isTried'  : false
           )))
         ;
 
@@ -109,6 +122,12 @@
 
         // Update feelings and active class on element
         $el[((feelings[action] = !$el.hasClass('active')) ? 'add' : 'remove') + 'Class']('active');
+
+        if (action == 'isLiked'){
+          var $counter  = $parent.find('.like-counter');
+
+          $counter.html(parseInt($counter.html()) + (feelings.isLiked ? 1 : -1));
+        }
 
         api.products.feelings(pid, feelings, function(error){
           if (error) return alert(error.message);
@@ -170,5 +189,18 @@
 
   app.onFacebookBtnClick = function(e){
     e.preventDefault();
+
+    api.session.getOauthUrl(config.oauth.redirectUrl, 'facebook', function(error, result){
+      if (error && error.message) return alert(error.message);
+      if (error) return alert(error);
+
+      window.location.href = result.url;
+    });
+  };
+
+  app.onUserLogin = function(){
+    // Update user header
+    // Direct to coming soon page?
+    alert('logged in!');
   };
 })();

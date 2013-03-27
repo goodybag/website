@@ -84,4 +84,39 @@
   api.session.getOauthUrl = function(url, service, callback){
     api.get('/oauth', { redirect_uri: url, service: service }, callback);
   };
+
+
+  api.users = {};
+
+  api.users.list = function(options, callback){
+    if (typeof options === "function"){
+      callback = options;
+      options = null;
+    }
+
+    api.get('/users', options, callback);
+  };
+
+  api.users.get = function(id, options, callback){
+    api.get('/users/' + id, options, callback);
+  };
+
+  api.users.create = function(user, callback){
+    api.post('/users', user, callback);
+  };
+
+  api.users.update = function(id, user, callback){
+    if (typeof id === "object"){
+      callback = user;
+      user = id;
+      id = user.id;
+      delete user.id;
+    }
+
+    api.put('/users/' + id, user, callback);
+  };
+
+  api.users.delete = function(id, callback){
+    api.delete('/users/' + id, callback);
+  };
 })(window);
