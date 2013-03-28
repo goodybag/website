@@ -1,8 +1,5 @@
 (function(exports){
-  var
-    app = exports.app = exports.app || {}
-  , productsOptions = { offset: 0, limit: 30, sort: 'random', hasPhoto: true }
-  ;
+  var app = exports.app = exports.app || {};
 
   app.init = function(){
     app.compileTemplates(templates);
@@ -18,7 +15,6 @@
 
     var code = window.location.href.split('code=')[1];
     code = code.split('/#_=_')[0];
-    alert(code);
 
     user.oauth(code, function(error){
       if (error && error.message) alert(error.message);
@@ -130,6 +126,5 @@
   app.onUserLogin = function(){
     // Update user header
     // Direct to coming soon page?
-    alert('logged in!');
   };
 })(window);

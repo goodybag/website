@@ -26,7 +26,9 @@
     utils.domready(function(){
       app.loadProducts();
       app.loadModals();
+      jcf.customForms.replaceAll(); // Re-run form stuff for modals
       app.headerEvents();
+      app.setupProductsInfiniScroll();
     });
   </script>
 </head>
@@ -34,7 +36,7 @@
   <div id="wrapper">
     <header id="header">
       <div class="holder">
-        <h1 class="logo"><a href="#">Goodybag</a></h1>
+        <h1 class="logo"><a href="/">Goodybag</a></h1>
         <nav id="nav">
           <ul>
             <li><a href="how-it-works.html" class="works">How it Works</a></li>

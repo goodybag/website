@@ -49,12 +49,17 @@
 
   app.applyBusinessesEvents = function(){
     utils.dom('#businesses-list a').click(app.businessListItemClick);
+    utils.dom('#businesses-list img').lazyload({
+      threshold:  300
+    , effect:     'fadeIn'
+    });
+    initLightbox();
   };
 
   app.businessListItemClick = function(e){
     var el = e.target;
     while (el.tagName.toLowerCase() != 'a') el = el.parentNode;
-console.log(app.businessesId[el.dataset.id])
+
     app.setLocationModalContent(
       templates.businessModal(app.businessesId[el.dataset.id])
     );
@@ -67,7 +72,13 @@ console.log(app.businessesId[el.dataset.id])
   };
 
   app.onBusinessSearchKeyUp = function(e){
+    if (app.bizFilter == e.target.value) return;
+
     app.bizFilter = e.target.value;
     app.renderBusinesses();
+
+    // Throttle
+    if (app.applyBusinessesEvents) clearTimeout(app.applyBusinessesEvents);
+    setTimeout(app.applyBusinessesEvents, 500);
   };
 })(window);
