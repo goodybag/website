@@ -733,6 +733,7 @@ button::-moz-focus-inner{
   margin:25px 0 55px;
   width: 938px;
 }
+#fixed-form.bg-fix .form-box { margin-bottom: 0; }
 .fixed-help{
   height: 91px;
   margin:0 0 55px;

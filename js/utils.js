@@ -5,6 +5,14 @@
   utils.domready = $;
   utils.compile = Handlebars.compile;
 
+  utils.filter = function(set, fn){
+    var filtered = [];
+    for (var i = 0, l = set.length; i < l; ++i){
+      if (fn(set[i])) filtered.push(set[i]);
+    }
+    return filtered;
+  };
+
   utils.ajax = function(method, url, data, callback){
     switch (method){
       case "get":     method = "GET";     break;

@@ -119,4 +119,38 @@
   api.users.delete = function(id, callback){
     api.delete('/users/' + id, callback);
   };
+
+  api.businesses = {};
+
+  api.businesses.list = function(options, callback){
+    if (typeof options === "function"){
+      callback = options;
+      options = null;
+    }
+
+    api.get('/businesses', options, callback);
+  };
+
+  api.businesses.get = function(id, options, callback){
+    api.get('/businesses/' + id, options, callback);
+  };
+
+  api.businesses.create = function(business, callback){
+    api.post('/businesses', business, callback);
+  };
+
+  api.businesses.update = function(id, business, callback){
+    if (typeof id === "object"){
+      callback = business;
+      business = id;
+      id = business.id;
+      delete business.id;
+    }
+
+    api.put('/businesses/' + id, business, callback);
+  };
+
+  api.businesses.delete = function(id, callback){
+    api.delete('/users/' + id, callback);
+  };
 })(window);

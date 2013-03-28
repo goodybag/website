@@ -4,8 +4,29 @@ jQuery(function(){
 	initSlideBlocks();
 	initInputs();
 	initLightbox();
+	initLayout();
 	jcf.customForms.replaceAll();
 });
+
+// page layout init
+function initLayout() {
+	jQuery('#main').fixedSlideBlock({
+		extraHeight: jQuery('#header').height(),
+		slideBlock: '#fixed-form'
+	});
+
+	jQuery(window).bind('scroll load',  bgFix);
+	
+	function bgFix(){
+		setTimeout(function(){
+			if (jQuery('#fixed-form').css('position') == 'fixed'){
+				jQuery('#fixed-form').addClass('bg-fix');
+			} else{
+				jQuery('#fixed-form').removeClass('bg-fix');
+			}
+		}, 10)
+	}
+}
 
 // fancybox modal popup init
 function initLightbox() {
@@ -38,7 +59,7 @@ function initInputs() {
 		clearTextareas: true,
 		clearPasswords: true,
 		skipClass: 'default',
-
+		
 		// input options
 		wrapWithElement: true,
 		showUntilTyping: false,
@@ -229,7 +250,7 @@ jcf = {
 				'-webkit-user-select:none;'+
 				'user-select:none;'+
 			'}');
-
+		
 		// append style element
 		style.type = 'text/css';
 		if(style.styleSheet) {
@@ -321,7 +342,7 @@ jcf.setBaseModule({
 		// handle focus loses
 		if(this.focused) return;
 		this.focused = true;
-
+		
 		// handle touch devices also
 		if(jcf.isTouchDevice) {
 			if(jcf.focusedInstance && jcf.focusedInstance.realElement != this.realElement) {
@@ -723,7 +744,7 @@ jcf.lib = {
 			if (e.isFixed) {
 				return e;
 			}
-			e.isFixed = true;
+			e.isFixed = true; 
 			e.preventDefault = e.preventDefault || function(){this.returnValue = false}
 			e.stopPropagation = e.stopPropagaton || function(){this.cancelBubble = true}
 			if (!e.target) {
@@ -917,7 +938,7 @@ jQuery(function(){
 	// fix options
 	var supportPositionFixed = !( (jQuery.browser.msie && jQuery.browser.version < 8) || isTouchDevice );
 	var overlaySelector = '#fancybox-overlay';
-
+	
 	if(supportPositionFixed) {
 		// create <style> rules
 		var head = document.getElementsByTagName('head')[0],
@@ -944,7 +965,7 @@ jQuery(function(){
  * Simple and fancy lightbox alternative
  *
  * Examples and documentation at: http://fancybox.net
- *
+ * 
  * Copyright (c) 2008 - 2010 Janis Skarnelis
  * That said, it is hardly a one-person project. Many people have submitted bugs, code, and offered their advice freely. Their support is greatly appreciated.
  *
@@ -1020,7 +1041,7 @@ jQuery(function(){
 			this.maskSizeProperty = 'height';
 			this.animProperty = this.options.vertical ? 'marginTop' : 'marginLeft';
 			this.swipeProperties = this.options.vertical ? ['up', 'down'] : ['left', 'right'];
-
+			
 			// control elements
 			this.gallery = $(this.options.holder).addClass(this.options.galleryReadyClass);
 			this.mask = this.gallery.find(this.options.mask);
@@ -1029,7 +1050,7 @@ jQuery(function(){
 			this.btnPrev = this.gallery.find(this.options.btnPrev);
 			this.btnNext = this.gallery.find(this.options.btnNext);
 			this.currentStep = 0; this.stepsCount = 0;
-
+			
 			// get start index
 			if(this.options.step === false) {
 				var activeSlide = this.slides.filter('.'+this.options.activeClass);
@@ -1037,11 +1058,11 @@ jQuery(function(){
 					this.currentStep = this.slides.index(activeSlide);
 				}
 			}
-
+			
 			// calculate offsets
 			this.calculateOffsets();
 			$(window).bind('load resize orientationchange', $.proxy(this.onWindowResize, this));
-
+			
 			// create gallery pagination
 			if(typeof this.options.generatePagination === 'string') {
 				this.pagerLinks = $();
@@ -1050,12 +1071,12 @@ jQuery(function(){
 				this.pagerLinks = this.gallery.find(this.options.pagerLinks);
 				this.attachPaginationEvents();
 			}
-
+			
 			// autorotation control buttons
 			this.btnPlay = this.gallery.find(this.options.btnPlay);
 			this.btnPause = this.gallery.find(this.options.btnPause);
 			this.btnPlayPause = this.gallery.find(this.options.btnPlayPause);
-
+			
 			// misc elements
 			this.curNum = this.gallery.find(this.options.currentNumber);
 			this.allNum = this.gallery.find(this.options.totalNumber);
@@ -1069,7 +1090,7 @@ jQuery(function(){
 				this.nextSlide();
 				e.preventDefault();
 			}));
-
+			
 			// pause on hover handling
 			if(this.options.pauseOnHover) {
 				this.gallery.hover(this.bindScope(function(){
@@ -1084,7 +1105,7 @@ jQuery(function(){
 					}
 				}));
 			}
-
+			
 			// autorotation buttons handler
 			this.btnPlay.bind(this.options.event, this.bindScope(this.startRotation));
 			this.btnPause.bind(this.options.event, this.bindScope(this.stopRotation));
@@ -1095,14 +1116,14 @@ jQuery(function(){
 					this.stopRotation();
 				}
 			}));
-
+			
 			// swipe event handling
 			if(isTouchDevice) {
 				// enable hardware acceleration
 				if(this.options.useTranslate3D) {
 					this.slider.css({'-webkit-transform': 'translate3d(0px, 0px, 0px)'});
 				}
-
+				
 				// swipe gestures
 				if(this.options.handleTouch && $.fn.swipe) {
 					this.mask.swipe({
@@ -1165,11 +1186,11 @@ jQuery(function(){
 				tmpObj[this.innerSizeFunction] = this.mask[this.innerSizeFunction]();
 				this.slides.css(tmpObj);
 			}
-
+			
 			this.maskSize = this.mask[this.innerSizeFunction]();
 			this.sumSize = this.getSumSize();
 			this.maxOffset = this.maskSize - this.sumSize;
-
+			
 			// vertical gallery with single size step custom behavior
 			if(this.options.vertical && this.options.maskAutoSize) {
 				this.options.step = 1;
@@ -1183,14 +1204,14 @@ jQuery(function(){
 				this.maxOffset = tmpOffset;
 				return;
 			}
-
+			
 			// scroll by slide size
 			if(typeof this.options.step === 'number' && this.options.step > 0) {
 				this.slideDimensions = [];
 				this.slides.each($.proxy(function(ind, obj){
 					this.slideDimensions.push( $(obj)[this.fullSizeFunction](true) );
 				},this));
-
+				
 				// calculate steps count
 				this.stepOffsets = [0];
 				this.stepsCount = 1;
@@ -1206,7 +1227,7 @@ jQuery(function(){
 			else {
 				// define step size
 				this.stepSize = this.maskSize;
-
+				
 				// calculate steps count
 				this.stepsCount = 1;
 				var tmpOffset = 0;
@@ -1302,13 +1323,13 @@ jQuery(function(){
 				if(this.resizeQueue) {
 					this.onWindowResize();
 				}
-
+				
 				// onchange callback
 				this.makeCallback('onChange', this);
 				this.autoRotate();
 			})});
 			this.refreshState();
-
+			
 			// onchange callback
 			this.makeCallback('onBeforeChange', this);
 		},
@@ -1319,14 +1340,14 @@ jQuery(function(){
 			this.pagerLinks.removeClass(this.options.activeClass).eq(this.currentStep).addClass(this.options.activeClass);
 			this.curNum.html(this.currentStep+1);
 			this.allNum.html(this.stepsCount);
-
+			
 			// initial refresh
 			if(this.options.maskAutoSize && typeof this.options.step === 'number') {
 				this.tmpProps = {};
 				this.tmpProps[this.maskSizeProperty] = this.slides.eq(Math.min(this.currentStep,this.slides.length-1))[this.slideSizeFunction](true);
 				this.mask.stop()[initial ? 'css' : 'animate'](this.tmpProps);
 			}
-
+			
 			// disabled state
 			if(!this.options.circularRotation) {
 				this.btnPrev.add(this.btnNext).removeClass(this.options.disabledClass);
@@ -1378,7 +1399,7 @@ jQuery(function(){
 			}
 		}
 	};
-
+	
 	// detect device type
 	var isTouchDevice = (function() {
 		try {
@@ -1387,7 +1408,7 @@ jQuery(function(){
 			return false;
 		}
 	}());
-
+	
 	// jquery plugin
 	$.fn.scrollGallery = function(opt){
 		return this.each(function(){
@@ -1501,7 +1522,7 @@ jQuery(function(){
 				this.fakeElement.style.color = getStyle(this.element, 'color');
 				this.fakeElement.style.position = 'absolute';
 				this.element.parentNode.insertBefore(this.fakeElement, this.element);
-
+				
 				if(this.element.value === this.origValue || !this.element.value) {
 					this.element.value = '';
 					this.togglePlaceholderText(true);
@@ -1615,7 +1636,7 @@ jQuery(function(){
 			if(!el) return; else if(state) addClass(el,cls); else removeClass(el,cls);
 		}
 	};
-
+	
 	// utility functions
 	function convertToArray(collection) {
 		var arr = [];
@@ -1683,6 +1704,173 @@ function bindReady(handler){
 	if (window.addEventListener) window.addEventListener('load', ready, false);
 	else if (window.attachEvent) window.attachEvent('onload', ready);
 }
+
+// Fixed Slide Block plugin
+;(function(){
+	jQuery.fn.fixedSlideBlock = function(options) {
+		var options = jQuery.extend({
+			slideBlock: '#sidebar',
+			alwaysStick: true,
+			animDelay: 100,
+			animSpeed: 250,
+			extraHeight: 0,
+			positionType: 'auto' // 'fixed', 'absolute'
+		}, options);
+		
+		return this.each(function(){
+			var win = jQuery(window);
+			var holder = jQuery(this);
+			var fixedBlock = holder.find(options.slideBlock);
+			var positionType = options.positionType, timer, d, stayStatic, prevHeight;
+			
+			// skip if block does not exists
+			if(!fixedBlock.length) {
+				return;
+			}
+			
+			// detect positioning type
+			if(positionType === 'auto') {
+				positionType = !isFixedPositionSupported || isTouchDevice ? 'absolute' : 'fixed';
+			}
+			
+			// recalculate all values
+			function recalculateDimensions() {
+				var origStyle = fixedBlock.attr('style');
+				fixedBlock.css({position:'',left:'',top:''});
+				d = {
+					winHeight: win.height(),
+					scrollTop: win.scrollTop(),
+					scrollLeft: win.scrollLeft(),
+					holderOffset: holder.offset(),
+					holderHeight: holder.height(),
+					blockPosition: fixedBlock.position(),
+					blockOffset: fixedBlock.offset(),
+					blockHeight: fixedBlock.outerHeight(true)
+				};
+				fixedBlock.attr('style',origStyle);
+				
+				// check for static position
+				if(prevHeight !== d.holderHeight) {
+					prevHeight = d.holderHeight;
+					stayStatic = checkStaticPosition();
+				}
+			}
+			
+			// dont fix block if content too small
+			function checkStaticPosition() {
+				var origStyle = fixedBlock.attr('style');
+				var origHeight = d.holderHeight;
+				fixedBlock.css({position:'absolute'});
+				var newHeight = holder.height();
+				if(newHeight < origHeight) {
+					fixedBlock.css({position:'', top:'', left:''});
+					return true;
+				} else {
+					fixedBlock.attr('style',origStyle);
+				}
+			}
+			
+			function positionFixed() {
+				if(d.scrollTop > d.blockOffset.top - options.extraHeight) {
+					// check that block fits in holder
+					if(d.scrollTop + options.extraHeight - d.holderOffset.top + d.blockHeight > d.holderHeight) {
+						fixedBlock.css({position:'absolute', left: d.blockPosition.left, top: d.blockPosition.top + d.holderHeight - d.blockHeight - (d.blockOffset.top - d.holderOffset.top)});
+					}
+					// set default fixed position
+					else {
+						fixedBlock.css({position:'fixed', left: d.blockOffset.left - d.scrollLeft, top: options.extraHeight});
+					}
+				} else {
+					// disable sticking
+					fixedBlock.css({position:'', top:'', left:''});
+				}
+			}
+			
+			function positionAbsolute(noAnimation) {
+				// default top position
+				var top = d.blockPosition.top;
+				if(d.scrollTop > d.blockOffset.top - options.extraHeight) {
+					// check that block fits in holder
+					if(d.scrollTop + options.extraHeight - d.holderOffset.top + d.blockHeight > d.holderHeight) {
+						top = d.blockPosition.top + d.holderHeight - d.blockHeight - (d.blockOffset.top - d.holderOffset.top);
+					}
+					// set fixed position
+					else {
+						top = d.blockPosition.top + d.scrollTop - d.blockOffset.top + options.extraHeight;
+					}
+				}
+				fixedBlock.stop().css({position:'absolute', left: d.blockPosition.left});
+				
+				// change block position animation
+				if(noAnimation === true) {
+					fixedBlock.css({top: top});
+				} else {
+					fixedBlock.animate({top: top},{duration: options.animSpeed});
+				}
+			}
+			
+			// reposition function
+			function reposition(e) {
+				// detect behavior
+				var noAnimation = (e === true);
+				
+				// recalculate size and offsets
+				recalculateDimensions();
+				if(stayStatic) {
+					return;
+				}
+				
+				// disable when window is smaller then fixed block
+				if(!options.alwaysStick && d.winHeight < d.blockHeight) {
+					fixedBlock.css({position:'', top:'', left:''});
+					return;
+				}
+				
+				// call position handler
+				if(positionType === 'fixed') {
+					positionFixed();
+				} else {
+					if(noAnimation) {
+						positionAbsolute(noAnimation);
+					}
+					clearTimeout(timer);
+					timer = setTimeout(positionAbsolute, options.animDelay);
+				}
+			}
+			
+			// add event handlers
+			setTimeout(function() {
+				reposition(true);
+				win.bind('scroll', reposition);
+				win.bind('resize orientationchange', function(){
+					reposition(true);
+				});
+			},10);
+		});
+	};
+	
+	// detect device type
+	var isTouchDevice = (function() {
+		try {
+			return ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch;
+		} catch (e) {
+			return false;
+		}
+	}());
+	
+	// detect position fixed support
+	var isFixedPositionSupported = (function(){
+		var supported = false, container = document.createElement('div'), fixedBlock = document.createElement('div');
+		container.style.cssText = 'position:absolute;top:9px;left:9px;width:100px;height:100px;background:red;';
+		fixedBlock.style.cssText = 'position:fixed;top:7px;width:1px;height:1px;';
+		container.appendChild(fixedBlock);
+		document.documentElement.insertBefore(container, document.documentElement.childNodes[0]);
+		supported = (fixedBlock.offsetTop == 7 || fixedBlock.offsetTop == -2 || (!fixedBlock.offsetWidth && typeof document.documentElement.style.maxHeight !== 'undefined'));
+		document.documentElement.removeChild(container);
+		fixedBlock = container = null;
+		return supported;
+	}());
+}());
 
 /*
 * touchSwipe - jQuery Plugin

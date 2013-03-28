@@ -24,5 +24,5 @@
     if (!(key in config.prod)) config.prod[key] = config.default[key];
   }
 
-  exports.config = config.dev;
+  exports.config = config.prod;
 })(window);
