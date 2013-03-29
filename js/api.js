@@ -151,6 +151,40 @@
   };
 
   api.businesses.delete = function(id, callback){
-    api.delete('/users/' + id, callback);
+    api.delete('/businesses/' + id, callback);
+  };
+
+  api.collections = {};
+
+  api.collections.list = function(cid, options, callback){
+    if (typeof options === "function"){
+      callback = options;
+      options = null;
+    }
+
+    api.get('/consumers/' + cid + '/collections', options, callback);
+  };
+
+  api.collections.get = function(cid, id, options, callback){
+    api.get('/consumers/' + cid + '/collections/' + id, options, callback);
+  };
+
+  api.collections.create = function(cid, collection, callback){
+    api.post('/consumers/' + cid + '/collections', collection, callback);
+  };
+
+  api.collections.update = function(cid, id, collection, callback){
+    if (typeof id === "object"){
+      callback = collection;
+      collection = id;
+      id = collection.id;
+      delete collection.id;
+    }
+
+    api.put('/consumers/' + cid + '/collections/' + id, collection, callback);
+  };
+
+  api.collections.delete = function(cid, id, callback){
+    api.delete('/consumers/' + cid + '/collections/' + id, callback);
   };
 })(window);

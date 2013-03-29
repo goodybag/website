@@ -9,6 +9,7 @@
 
   <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="js/jquery.main.js"></script>
+  <script type="text/javascript" src="js/spin.min.js"></script>
   <script type="text/javascript" src="js/handlebars.js"></script>
 
   <script type="text/javascript" src="js/config.js"></script>
@@ -24,6 +25,7 @@
     app.init();
 
     utils.domready(function(){
+      app.startProductsSpinner()
       app.loadProducts();
       app.loadModals();
       jcf.customForms.replaceAll(); // Re-run form stuff for modals
@@ -95,6 +97,7 @@
     <section id="main">
       <div class="holder">
         <ul class="item-list" id="products-list"></ul>
+        <div class="spinner-wrap"></div>
       </div>
     </section>
   </div>

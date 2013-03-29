@@ -4,6 +4,11 @@
   app.init = function(){
     app.compileTemplates(templates);
     app.checkForAccessCode();
+    app.setupSpinner();
+  };
+
+  app.setupSpinner = function(){
+    app.spinner = new Spinner(config.spinner);
   };
 
   app.headerEvents = function(){

@@ -269,7 +269,7 @@ button::-moz-focus-inner{
 	border-radius:6px;
 	overflow:hidden;
 }
-.item-list img{display:block;}
+.item-list img{display:block; min-height: 240px; }
 .item-list .heading{
 	display:none;
 	position:absolute;
@@ -1470,4 +1470,9 @@ button::-moz-focus-inner{
 }
 .sign-form .item{
 	float:left;
+}
+
+.spinner-wrap {
+	height: 80px;
+	padding: 20px;
 }

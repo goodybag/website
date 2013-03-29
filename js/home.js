@@ -1,10 +1,14 @@
 (function(exports){
   var
     app = exports.app = exports.app || {}
-  , productsOptions = { offset: 0, limit: 30, sort: 'random', hasPhoto: true }
+  , productsOptions = { offset: 0, limit: 30, sort: 'popular', hasPhoto: true }
   ;
 
   app.loadingProducts = false;
+
+  app.startProductsSpinner = function(){
+    app.spinner.spin(utils.dom('#main .spinner-wrap')[0]);
+  };
 
   app.loadProducts = function(callback){
     callback = callback || utils.noop;

@@ -8,6 +8,10 @@
     if (_init) _init();
   };
 
+  app.startBusinessesSpinner = function(){
+    app.spinner.spin(utils.dom('#main .spinner-wrap')[0]);
+  };
+
   app.locationsEvents = function(){
     utils.dom('#name-1').on('keyup', app.onBusinessSearchKeyUp);
   };
@@ -42,6 +46,7 @@
       }
 
       app.applyBusinessesEvents();
+      app.spinner.stop();
 
       if (callback) callback(null, app.businesses);
     });
