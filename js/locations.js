@@ -1,11 +1,19 @@
 (function(exports){
   var
-    app   = exports.app = exports.app || {}
-  , _init = app.init
+    app       = exports.app = exports.app || {}
+  , _init     = app.init
+  , _domready = app.domready
   ;
 
   app.init = function(){
     if (_init) _init();
+  };
+
+  app.domready = function(){
+    if (_domready) _domready();
+
+    app.startBusinessesSpinner();
+    app.loadBusinesses();
   };
 
   app.startBusinessesSpinner = function(){

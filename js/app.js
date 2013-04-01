@@ -5,6 +5,13 @@
     app.compileTemplates(templates);
     app.checkForAccessCode();
     app.setupSpinner();
+    utils.domready(app.domready);
+  };
+
+  app.domready = function(){
+    app.loadModals();
+    jcf.customForms.replaceAll(); // Re-run form stuff for modals
+    app.headerEvents();
   };
 
   app.setupSpinner = function(){

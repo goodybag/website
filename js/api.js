@@ -34,6 +34,15 @@
     api.get('/products', options, callback);
   };
 
+  api.products.food = function(options, callback){
+    if (typeof options === "function"){
+      callback = options;
+      options = null;
+    }
+
+    api.get('/products/food', options, callback);
+  };
+
   api.products.get = function(id, options, callback){
     api.get('/products/' + id, options, callback);
   };
@@ -154,37 +163,49 @@
     api.delete('/businesses/' + id, callback);
   };
 
+  api.businesses.createContactEntry = function(info, callback){
+    api.post('/businesses/contact-entries', info, callback);
+  };
+
   api.collections = {};
 
-  api.collections.list = function(cid, options, callback){
+  api.collections.list = function(uid, options, callback){
     if (typeof options === "function"){
       callback = options;
       options = null;
     }
 
-    api.get('/consumers/' + cid + '/collections', options, callback);
+    api.get('/consumers/' + uid + '/collections', options, callback);
   };
 
-  api.collections.get = function(cid, id, options, callback){
-    api.get('/consumers/' + cid + '/collections/' + id, options, callback);
+  api.collections.get = function(uid, cid, options, callback){
+    api.get('/consumers/' + uid + '/collections/' + cid, options, callback);
   };
 
-  api.collections.create = function(cid, collection, callback){
-    api.post('/consumers/' + cid + '/collections', collection, callback);
+  api.collections.create = function(uid, collection, callback){
+    api.post('/consumers/' + uid + '/collections', collection, callback);
   };
 
-  api.collections.update = function(cid, id, collection, callback){
-    if (typeof id === "object"){
+  api.collections.add = function(uid, cid, pid, callback){
+    api.post('/consumers/' + uid + '/collections/' + cid + '/products', { productId: pid }, callback);
+  };
+
+  api.collections.remove = function(uid, cid, pid, callback){
+    api.delete('/consumers/' + uid + '/collections/' + cid + '/products/' + pid, callback);
+  };
+
+  api.collections.update = function(uid, cid, collection, callback){
+    if (typeof cid === "object"){
       callback = collection;
-      collection = id;
-      id = collection.id;
+      collection = cid;
+      cid = collection.id;
       delete collection.id;
     }
 
-    api.put('/consumers/' + cid + '/collections/' + id, collection, callback);
+    api.put('/consumers/' + uid + '/collections/' + cid, collection, callback);
   };
 
-  api.collections.delete = function(cid, id, callback){
-    api.delete('/consumers/' + cid + '/collections/' + id, callback);
+  api.collections.delete = function(uid, cid, callback){
+    api.delete('/consumers/' + uid + '/collections/' + cid, callback);
   };
 })(window);

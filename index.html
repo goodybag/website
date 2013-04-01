@@ -23,15 +23,6 @@
   <!--[if IE]><script type="text/javascript" src="js/ie.js"></script><![endif]-->
   <script>
     app.init();
-
-    utils.domready(function(){
-      app.startProductsSpinner()
-      app.loadProducts();
-      app.loadModals();
-      jcf.customForms.replaceAll(); // Re-run form stuff for modals
-      app.headerEvents();
-      app.setupProductsInfiniScroll();
-    });
   </script>
 </head>
 <body>

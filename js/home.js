@@ -1,10 +1,21 @@
 (function(exports){
   var
-    app = exports.app = exports.app || {}
-  , productsOptions = { offset: 0, limit: 30, sort: 'popular', hasPhoto: true }
+    app       = exports.app = exports.app || {}
+  , _init     = app.init
+  , _domready = app.domready
+
+  , productsOptions = { offset: 0, limit: 30, sort: '-popular', hasPhoto: true }
   ;
 
   app.loadingProducts = false;
+
+  app.domready = function(){
+    if (_domready) _domready();
+
+    app.startProductsSpinner()
+    app.loadProducts();
+    app.setupProductsInfiniScroll();
+  };
 
   app.startProductsSpinner = function(){
     app.spinner.spin(utils.dom('#main .spinner-wrap')[0]);
@@ -15,7 +26,7 @@
 
     app.loadingProducts = true;
 
-    api.products.list(productsOptions, function(error, products){
+    api.products.food(productsOptions, function(error, products){
       if (error) return callback(error), app.loadingProducts = false;
 
       app.loadProductsWithData(products);
@@ -42,12 +53,15 @@
     initSlideBlocks(html);
   };
 
+  app.finishedProducts = function(){
+
+  };
+
   app.setupProductsInfiniScroll = function(){
     var $window = utils.dom(window);
     $window.scroll(function(){
-      if ($window.scrollTop() >= utils.dom(document).height() - $window.height() - 100 && !app.loadingProducts){
+      if ($window.scrollTop() >= (utils.dom(document).height() - $window.height() - 100) && !app.loadingProducts){
         productsOptions.offset += productsOptions.limit;
-        console.log(productsOptions)
 
         app.loadProducts();
       }
@@ -96,6 +110,9 @@
         api.products.feelings(pid, feelings, function(error){
           if (error) return alert(error.message);
         });
+
+        if (feelings[action]) api.collections.add(user.attributes.id, 'all', pid);
+        if (feelings[action]) api.collections.add(user.attributes.id, 'food', pid);
       });
     });
   };
