@@ -15,6 +15,7 @@
     app.startBusinessesSpinner();
     app.loadBusinesses();
     utils.dom('#biz-search-form').submit(app.onBusinessSearchSubmit);
+    utils.dom('#biz-request-form').submit(app.onBusinessRequestSubmit);
     utils.dom('#name-1').on('keyup', app.onBusinessSearchKeyUp);
   };
 
@@ -103,5 +104,33 @@
     // Throttle
     if (app.applyBusinessesEvents) clearTimeout(app.applyBusinessesEvents);
     setTimeout(app.applyBusinessesEvents, 200);
+  };
+
+  app.onBusinessRequestSubmit = function(e){
+    e.preventDefault();
+
+    if (e.target.value == "") return;
+
+    if (app.businessRequestTimeout) clearTimeout(app.businessRequestTimeout);
+
+    var $label  = utils.dom('#biz-request-form label');
+    app.oldLabelText = app.oldLabelText || $label.html();
+
+    $label.fadeOut(function(){
+      $label.html([
+        "Thanks! We'll get on it!"
+      , "Nice one! We'll get right on it!"
+      , "Good suggestion. We'll contact them"
+      ][parseInt(Math.random() * 3)]);
+
+      $label.fadeIn(function(){
+        app.businessRequestTimeout = setTimeout(function(){
+          $label.fadeOut(function(){
+            $label.html(app.oldLabelText);
+            $label.fadeIn();
+          });
+        }, 4000);
+      });
+    });
   };
 })(window);
