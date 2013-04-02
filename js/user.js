@@ -45,7 +45,7 @@
   };
 
   user.register = function(attributes, callback){
-    api.users.create(attributes, function(error, result){
+    api.consumers.create(attributes, function(error, result){
       if (error) return callback(error);
 
       user.save(result);
@@ -63,4 +63,8 @@
       callback();
     });
   };
+
+  for (var key in BackboneEvents){
+    user[key] = BackboneEvents[key];
+  }
 })(window);

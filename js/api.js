@@ -129,6 +129,40 @@
     api.delete('/users/' + id, callback);
   };
 
+  api.consumers = {};
+
+  api.consumers.list = function(options, callback){
+    if (typeof options === "function"){
+      callback = options;
+      options = null;
+    }
+
+    api.get('/consumers', options, callback);
+  };
+
+  api.consumers.get = function(id, options, callback){
+    api.get('/consumers/' + id, options, callback);
+  };
+
+  api.consumers.create = function(consumer, callback){
+    api.post('/consumers', consumer, callback);
+  };
+
+  api.consumers.update = function(id, consumer, callback){
+    if (typeof id === "object"){
+      callback = consumer;
+      consumer = id;
+      id = consumer.id;
+      delete consumer.id;
+    }
+
+    api.put('/consumers/' + id, consumer, callback);
+  };
+
+  api.consumers.delete = function(id, callback){
+    api.delete('/consumers/' + id, callback);
+  };
+
   api.businesses = {};
 
   api.businesses.list = function(options, callback){

@@ -105,8 +105,10 @@
 
     var $password = app.$registerForm.find('#pass-1');
 
+    app.$registerForm.find('.field').removeClass('error');
+
     if ($password.val() != app.$registerForm.find('#pass-2').val())
-      return alert("Passwords Must match"), app.$registerForm.find('input[type="password"]').val("");
+      return alert("Passwords Must match"), app.$registerForm.find('input[type="password"]').val("").addClass('error');
 
     var data = {
       email:          app.$registerForm.find('#email').val()
@@ -117,8 +119,19 @@
     app.$registerForm.find('input[type="password"]').val("");
 
     user.register(data, function(error, result){
-      if (error && error.message) return alert(error.message);
-      if (error) return alert(error);
+      if (error){
+        var msg = error.message || error;
+        if (error.details){
+          msg += " ";
+          for (var key in error.details){
+            console.log(key);
+            app.$registerForm.find('.field-' + key).addClass('error');
+            msg += key + ": " + error.details[key] + ", ";
+          }
+          msg = msg.substring(0, msg.length -2);
+        }
+        return alert(msg);
+      }
 
       app.closeModals();
     });

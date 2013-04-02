@@ -1496,5 +1496,5 @@ button::-moz-focus-inner{
 }
 
 input.error {
-	border: solid #f00 1px;
+	border: solid #f00 1px !important;
 }

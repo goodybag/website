@@ -41,6 +41,7 @@
     var $list = utils.dom('#products-list'), html = "";
 
     for (var i = 0, l = products.length; i < l; ++i){
+      if (products[i].photoUrl) products[i].photoUrl = products[i].photoUrl.replace('www', 'cdn');
       html += templates.product(products[i]);
     }
 
