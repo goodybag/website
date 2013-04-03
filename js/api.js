@@ -6,6 +6,7 @@
   };
 
   api.post = function(url, data, callback){
+    console.log(data);
     utils.post(config.baseUrl + url, data, callback);
   };
 
@@ -199,6 +200,10 @@
 
   api.businesses.createContactEntry = function(info, callback){
     api.post('/businesses/contact-entries', info, callback);
+  };
+
+  api.businesses.addRequest = function(name, callback){
+    api.post('/businesses/requests', { name: name }, callback);
   };
 
   api.collections = {};

@@ -109,7 +109,10 @@
   app.onBusinessRequestSubmit = function(e){
     e.preventDefault();
 
-    if (e.target.value == "") return;
+    var $el = utils.dom(e.target).find('input').eq(0);
+    if ($el.val() == "") return;
+
+    $el.val("");
 
     if (app.businessRequestTimeout) clearTimeout(app.businessRequestTimeout);
 
@@ -132,5 +135,7 @@
         }, 4000);
       });
     });
+
+    api.businesses.addRequest($el.val());
   };
 })(window);

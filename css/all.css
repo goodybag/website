@@ -889,7 +889,7 @@ button::-moz-focus-inner{
 	width:171px;
 	height:190px;
 	border:1px solid #bbb9b6;
-	box-shadow:0 2px 4px 0 rgba(0,0,0,0.2), inset 0 0 1px 1px #fff;
+	box-shadow:0 1px 4px 0 rgba(0,0,0,0.2), inset 0 0 1px 1px #fff;
 	border-radius:5px;
 	background:#f2f2f2;
 }
