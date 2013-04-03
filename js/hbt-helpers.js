@@ -1,6 +1,6 @@
 (function(exports){
   Handlebars.registerHelper('filepicker', function(url, width, height){
-    if (!url) return "http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=240&h=240&fit=crop";
+    if (!url) return "http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=" + (width || 100) + "&h=" + (height || 100) + "&fit=crop";
 
     url = url.replace('www', 'cdn');
     url += "/convert?cache=true&fit=crop";

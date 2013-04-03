@@ -187,6 +187,7 @@
   };
 
   app.onUserAuth = function(){
+    console.log("alkdsjf");
     app.loadUserHeader();
     app.applyUserHeaderEvents();
     utils.dom('.pre-login').addClass('hide');

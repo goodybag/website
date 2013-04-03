@@ -80,7 +80,7 @@
       if (error) return callback ? callback(error) : null;
 
       for (var key in attributes){
-        results[key] = attributes[key];
+        result[key] = attributes[key];
       }
 
       user.save(result);
