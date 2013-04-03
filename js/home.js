@@ -1,8 +1,10 @@
 (function(exports){
   var
-    app       = exports.app = exports.app || {}
-  , _init     = app.init
-  , _domready = app.domready
+    app           = exports.app = exports.app || {}
+  , _init         = app.init
+  , _domready     = app.domready
+  , _onUserDeAuth = app.onUserDeAuth
+  , _onUserAuth   = app.onUserAuth
 
   , productsOptions = { offset: 0, limit: 30, sort: '-popular', hasPhoto: true }
   ;
@@ -19,6 +21,14 @@
 
   app.startProductsSpinner = function(){
     app.spinner.spin(utils.dom('#main .spinner-wrap')[0]);
+  };
+
+  app.reloadProducts = function(callback){
+    utils.dom('#products-list').html("");
+
+    productsOptions.offset = 0;
+
+    app.loadProducts(callback);
   };
 
   app.loadProducts = function(callback){
@@ -115,5 +125,18 @@
         if (feelings[action]) api.collections.add(user.attributes.id, 'food', pid);
       });
     });
+  };
+
+  app.onUserAuth = function(user, wasFromAuthing){
+    // If event was from actual authing and not a session grab
+    // Then reload the products list with proper userLikes and such
+    if (wasFromAuthing) app.reloadProducts();
+
+    _onUserAuth();
+  };
+
+  app.onUserDeAuth = function(){
+    _onUserDeAuth();
+    utils.dom('.item-buttons a').removeClass('active');
   };
 })(window);

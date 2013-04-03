@@ -1,6 +1,6 @@
 (function(exports){
   Handlebars.registerHelper('filepicker', function(url, width, height){
-    if (!url) return;
+    if (!url) return "http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=240&h=240&fit=crop";
 
     url = url.replace('www', 'cdn');
     url += "/convert?cache=true&fit=crop";
@@ -9,5 +9,11 @@
     if (height) url += "&w=" + height;
 
     return url;
+  });
+
+  Handlebars.registerHelper('headerName', function(firstName, lastName){
+    if (!firstName) return config.defaultName;
+
+    return firstName + " " + lastName[0].toUpperCase() + ".";
   });
 })(window);

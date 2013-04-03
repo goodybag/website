@@ -7,6 +7,10 @@
     app.setupSpinner();
     utils.domready(app.domready);
 
+    // I know, I know.. not decoupled WHATEVER
+    user.onAuth   = app.onUserAuth;
+    user.onDeAuth = app.onUserDeAuth;
+
     user.loggedIn(function(error, result){
       if (error) return app.error(error);
     });
@@ -34,6 +38,20 @@
       }
       return alert(msg);
     }
+  };
+
+  app.loadUserHeader = function(){
+    utils.dom('#user-info').html(
+      templates.headerUserInfo(user.attributes)
+    );
+  };
+
+  app.applyUserHeaderEvents = function(){
+    utils.dom('#user-info .logout').click(function(e){
+      e.preventDefault();
+
+      user.logout();
+    });
   };
 
   app.setupSpinner = function(){
@@ -169,11 +187,14 @@
   };
 
   app.onUserAuth = function(){
-    alert('user auth');
-    // Update user header
-    // Direct to coming soon page?
+    app.loadUserHeader();
+    app.applyUserHeaderEvents();
+    utils.dom('.pre-login').addClass('hide');
+    utils.dom('.post-login').removeClass('hide');
   };
+
   app.onUserDeAuth = function(){
-    alert('user deauth');
+    utils.dom('.post-login').addClass('hide');
+    utils.dom('.pre-login').removeClass('hide');
   };
 })(window);

@@ -20,6 +20,8 @@
       }
 
     , infiniScrollHeight: 400
+
+    , defaultName: 'Goodybagger'
     }
 
   , dev: {

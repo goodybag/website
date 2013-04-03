@@ -7,7 +7,7 @@
   , '    <h2>{{#if name}}{{name}}{{else}}Awesome Product{{/if}}</h2>'
   , '    <a href="#" class="hash">@ {{businessName}}</a>'
   , '  </header>'
-  , '  <img src="{{filepicker photoUrl 240 240}}" width="240" height="240" alt="{{description}}" onerror="this.src=\'images/img-\'+ (Math.floor(Math.random() * 10) + 1) + \'.jpg\'">'
+  , '  <img src="{{filepicker photoUrl 240 240}}" width="240" height="240" alt="{{description}}" onerror="this.src = \'http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=240&h=240&fit=crop\'">'
   , '  <ul class="item-buttons">'
   , '    <li><a href="#" class="want{{#if userWants}} active{{/if}}">want</a></li>'
   , '    <li><a href="#" class="like{{#if userLikes}} active{{/if}}">like it</a></li>'
@@ -110,7 +110,7 @@
   , '</header>'
   , '<div class="holder columns">'
   , '<aside class="main-info column">'
-  , '  <img src="{{logoUrl}}/convert?w=114&h=114&fit=crop" alt="{{name}}">'
+  , '  <img src="{{filepicker logoUrl 114 114}}" alt="{{name}}">'
   , '  {{#if url}}<a target="_blank" href="{{url}}" class="link">Visit website</a>{{/if}}'
   , '</aside>'
   , '<div class="column right">'
@@ -121,6 +121,15 @@
     , '  <a target="_blank" href="http://maps.google.com/?q={{../name}} {{this.street1}}, {{#if this.street2}}{{this.street2}}, {{/if}}{{this.city}}, {{this.state}} {{this.zip}}" class="link">View on map</a>'
     , '</div>'
     , '{{/each}}'
+  , '</div>'
+  ].join('\n');
+
+  templates.headerUserInfo = [
+    '<img class="avatar" src="{{filepicker avatarUrl 44 44}}" onerror="this.src = \'http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=240&h=240&fit=crop\'" alt="user avatar">'
+  , '<div class="info">'
+  , '  {{headerName  firstName lastName}}'
+  , '  <br />'
+  , '  <a href="#" class="logout">Logout</a>'
   , '</div>'
   ].join('\n');
 })(window);

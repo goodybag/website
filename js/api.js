@@ -19,7 +19,7 @@
   };
 
   api.delete = function(url, callback){
-    utils.post(config.baseUrl + url, callback);
+    utils.delete(config.baseUrl + url, callback);
   };
 
 

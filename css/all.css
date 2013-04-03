@@ -1488,6 +1488,28 @@ button::-moz-focus-inner{
 	width: 50%;
 }
 
+.inline-columns {
+	display: table;
+	width: 100%;
+	font-size: 0;
+}
+
+.inline-columns > .column {
+	display: table;
+	font-size: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	width: 50%;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.inline-columns > .column:first-child {
+	margin-right: 12px;
+}
+
 #popup-1 .main-info.column {
 	width: 33%;
 }
@@ -1497,4 +1519,41 @@ button::-moz-focus-inner{
 
 input.error {
 	border: solid #f00 1px !important;
+}
+
+.hide {
+	display: none;
+}
+
+.user-header-info {
+	float: left;
+	width: 388px;
+	margin-top: 8px;
+	text-align: right;
+	font-color: #fff;
+	font-weight: 100;
+	font-size: 18px;
+	text-shadow: 0 1px 0 #000;
+}
+
+.user-header-info .info {
+	display: inline-block;
+	vertical-align: middle;
+	padding-top: 3px;
+	text-align: left;
+	line-height: 15px;
+}
+
+.user-header-info .avatar {
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 100px;
+	box-shadow: 0 1px 1px #000;
+	width: 44px;
+	margin-right: 10px;
+}
+
+.user-header-info .logout {
+	color: #AFAFAF;
+	font-size: 13px;
 }
