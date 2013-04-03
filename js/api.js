@@ -78,8 +78,8 @@
     api.get('/session', callback);
   };
 
-  api.session.create = function(data, callback){
-    api.post('/session', data, callback);
+  api.session.create = function(email, password, callback){
+    api.post('/session', { email: email, password: password }, callback);
   };
 
   api.session.delete = function(callback){

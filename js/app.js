@@ -6,12 +6,34 @@
     app.checkForAccessCode();
     app.setupSpinner();
     utils.domready(app.domready);
+
+    user.loggedIn(function(error, result){
+      if (error) return app.error(error);
+    });
   };
 
   app.domready = function(){
     app.loadModals();
     jcf.customForms.replaceAll(); // Re-run form stuff for modals
     app.headerEvents();
+  };
+
+  app.error = function(error, $el){
+    if (error){
+      var msg = error.message || error, detailsAdded = false;
+      if (error.details){
+        msg += "\n";
+        for (var key in error.details){
+          if ($el) $el.find('.field-' + key).addClass('error');
+          if (error.details[key]){
+            msg += "\n" + key + ": " + error.details[key] + ", ";
+            detailsAdded = true;
+          }
+        }
+        if (detailsAdded) msg = msg.substring(0, msg.length -2);
+      }
+      return alert(msg);
+    }
   };
 
   app.setupSpinner = function(){
@@ -31,8 +53,6 @@
     user.oauth(code, function(error){
       if (error && error.message) alert(error.message);
       if (error) alert(error);
-
-      app.onUserLogin();
     });
   };
 
@@ -85,15 +105,25 @@
 
     $password.val("");
 
-    user.isLoggedIn(function(error, isLoggedIn){
-      if (error && error.message) return alert(error.message);
-      if (error) return alert(error);
+    app.$loginForm.find('.field').removeClass('error');
 
-      if (isLoggedIn) return alert("You're alraedy logged in!");
+    if (email == "") return app.error({
+      message: 'You forgot to put in your email!'
+    , details: { email: null }
+    }, app.$loginForm);
+
+    if (password == "") return app.error({
+      message: 'You forgot to put in your password!'
+    , details: { password: null }
+    }, app.$loginForm);
+
+    user.loggedIn(function(error, isLoggedIn){
+      if (error) return app.error(error, app.$loginForm);
+
+      if (isLoggedIn) return app.error("You're alraedy logged in!");
 
       user.auth(email, password, function(error, result){
-        if (error && error.message) return alert(error.message);
-        if (error) return alert(error);
+        if (error) return app.error(error, app.$loginForm);
 
         app.closeModals();
       });
@@ -106,9 +136,11 @@
     var $password = app.$registerForm.find('#pass-1');
 
     app.$registerForm.find('.field').removeClass('error');
-
     if ($password.val() != app.$registerForm.find('#pass-2').val())
-      return alert("Passwords Must match"), app.$registerForm.find('input[type="password"]').val("").addClass('error');
+      return app.error({
+        message: 'Passwords must match'
+      , details: { password: null }
+      }, app.$registerForm);
 
     var data = {
       email:          app.$registerForm.find('#email').val()
@@ -119,19 +151,7 @@
     app.$registerForm.find('input[type="password"]').val("");
 
     user.register(data, function(error, result){
-      if (error){
-        var msg = error.message || error;
-        if (error.details){
-          msg += " ";
-          for (var key in error.details){
-            console.log(key);
-            app.$registerForm.find('.field-' + key).addClass('error');
-            msg += key + ": " + error.details[key] + ", ";
-          }
-          msg = msg.substring(0, msg.length -2);
-        }
-        return alert(msg);
-      }
+      if (error) return app.error(error, app.$registerForm);
 
       app.closeModals();
     });
@@ -148,8 +168,12 @@
     });
   };
 
-  app.onUserLogin = function(){
+  app.onUserAuth = function(){
+    alert('user auth');
     // Update user header
     // Direct to coming soon page?
+  };
+  app.onUserDeAuth = function(){
+    alert('user deauth');
   };
 })(window);

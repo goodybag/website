@@ -18,6 +18,8 @@
       , top: 'auto'           // Top position relative to parent in px
       , left: 'auto'          // Left position relative to parent in px
       }
+
+    , infiniScrollHeight: 400
     }
 
   , dev: {
@@ -35,9 +37,9 @@
     }
   };
 
-  for (var key in config.default){
-    if (!(key in config.dev)) config.dev[key]   = config.default[key];
-    if (!(key in config.prod)) config.prod[key] = config.default[key];
+  for (var key in config.defaults){
+    if (!(key in config.dev)) config.dev[key]   = config.defaults[key];
+    if (!(key in config.prod)) config.prod[key] = config.defaults[key];
   }
 
   exports.config = config.dev;

@@ -9,7 +9,9 @@
     api.session.get(function(error, result){
       if (error) return callback(error);
 
-      if (result && result.id) user.save(result);
+      if (result && result.id){
+        user.save(result);
+      }
 
       callback(null, !!user.attributes.id);
     });
@@ -63,8 +65,4 @@
       callback();
     });
   };
-
-  for (var key in BackboneEvents){
-    user[key] = BackboneEvents[key];
-  }
 })(window);

@@ -61,7 +61,7 @@
   app.setupProductsInfiniScroll = function(){
     var $window = utils.dom(window);
     $window.scroll(function(){
-      if ($window.scrollTop() >= (utils.dom(document).height() - $window.height() - 100) && !app.loadingProducts){
+      if ($window.scrollTop() >= (utils.dom(document).height() - $window.height() - config.infiniScrollHeight) && !app.loadingProducts){
         productsOptions.offset += productsOptions.limit;
 
         app.loadProducts();
