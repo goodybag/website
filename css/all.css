@@ -1547,6 +1547,10 @@ input.error {
 .user-header-info .avatar {
 	display: inline-block;
 	vertical-align: middle;
+	-webkit-radius: 100px;
+	-moz-radius: 100px;
+	-ie-radius: 100px;
+	-o-radius: 100px;
 	border-radius: 100px;
 	box-shadow: 0 1px 1px #000;
 	width: 44px;
