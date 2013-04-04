@@ -77,16 +77,23 @@
       }
 
       var req = new XDomainRequest();
-      req.open(method, url);
       req.contentType = 'application/json';
+
+      req.open(method, url);
 
       req.onload = function(e){
         if (req.responseText){
           var res = JSON.parse(req.responseText);
+          if (res.error && !res.error.message && !res.error.name) res = null;
           callback(res.error, res.data, res.meta);
+        } else {
+          return callback(new Error('An error occured when trying to load the data from ' + url));
         }
       };
-      req.send(data && method != "get" ? JSON.stringify(data) : null);
+
+      req.onerror = callback;
+
+      req.send(data && method != "get" ? utils.queryParams(data).substring(1) : null);
     }
   }
 
