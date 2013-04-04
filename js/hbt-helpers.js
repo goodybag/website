@@ -11,8 +11,8 @@
     return url;
   });
 
-  Handlebars.registerHelper('headerName', function(firstName, lastName){
-    if (!firstName) return config.defaultName;
+  Handlebars.registerHelper('headerName', function(firstName, lastName, screenName){
+    if (!firstName) return screenName || config.defaultName;
 
     return firstName + " " + lastName[0].toUpperCase() + ".";
   });

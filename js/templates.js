@@ -127,7 +127,7 @@
   templates.headerUserInfo = [
     '<img class="avatar" src="{{filepicker avatarUrl 44 44}}" onerror="this.src = \'http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=240&h=240&fit=crop\'" alt="user avatar">'
   , '<div class="info">'
-  , '  {{headerName  firstName lastName}}'
+  , '  {{headerName  firstName lastName screenName}}'
   , '  <br />'
   , '  <a href="#" class="logout">Logout</a>'
   , '</div>'

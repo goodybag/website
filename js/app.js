@@ -24,7 +24,12 @@
 
   app.error = function(error, $el){
     if (error){
-      var msg = error.message || error, detailsAdded = false;
+      var msg, detailsAdded = false;
+      if (typeof error == "object")
+        msg = error.message || (window.JSON ? window.JSON.stringify(error) : error);
+      else
+        msg = error;
+
       if (error.details){
         msg += "\n";
         for (var key in error.details){
@@ -67,6 +72,7 @@
 
     var code = window.location.href.split('code=')[1];
     code = code.split('/#_=_')[0];
+    code = code.split('#_=_')[0];
 
     user.oauth(code, function(error){
       if (error && error.message) alert(error.message);
@@ -187,7 +193,6 @@
   };
 
   app.onUserAuth = function(){
-    console.log("alkdsjf");
     app.loadUserHeader();
     app.applyUserHeaderEvents();
     utils.dom('.pre-login').addClass('hide');

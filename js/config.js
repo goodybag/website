@@ -1,4 +1,6 @@
 (function(exports){
+  if (!window.console) console = { log: function(){}, error: function(){} };
+
   var config = exports.config = exports.config || {
     defaults: {
       spinner: {
@@ -44,5 +46,5 @@
     if (!(key in config.prod)) config.prod[key] = config.defaults[key];
   }
 
-  exports.config = config.dev;
+  exports.config = config.prod;
 })(window);

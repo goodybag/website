@@ -91,7 +91,7 @@
   };
 
   user.logout = function(callback){
-    api.session.delete(function(error){
+    api.session.del(function(error){
       if (error) return callback ? callback(error) : null;
 
       user.attributes = {};

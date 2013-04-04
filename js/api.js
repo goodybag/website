@@ -18,8 +18,8 @@
     utils.patch(config.baseUrl + url, data, callback);
   };
 
-  api.delete = function(url, callback){
-    utils.delete(config.baseUrl + url, callback);
+  api.del = function(url, callback){
+    utils.del(config.baseUrl + url, callback);
   };
 
 
@@ -67,8 +67,8 @@
     api.put('/products/' + id + '/feelings', feelings, callback);
   };
 
-  api.products.delete = function(id, callback){
-    api.delete('/products/' + id, callback);
+  api.products.del = function(id, callback){
+    api.del('/products/' + id, callback);
   };
 
 
@@ -83,8 +83,8 @@
     api.post('/session', { email: email, password: password }, callback);
   };
 
-  api.session.delete = function(callback){
-    api.delete('/session', callback);
+  api.session.del = function(callback){
+    api.del('/session', callback);
   };
 
   api.session.oauth = function(code, callback){
@@ -126,8 +126,8 @@
     api.put('/users/' + id, user, callback);
   };
 
-  api.users.delete = function(id, callback){
-    api.delete('/users/' + id, callback);
+  api.users.del = function(id, callback){
+    api.del('/users/' + id, callback);
   };
 
   api.consumers = {};
@@ -160,8 +160,8 @@
     api.put('/consumers/' + id, consumer, callback);
   };
 
-  api.consumers.delete = function(id, callback){
-    api.delete('/consumers/' + id, callback);
+  api.consumers.del = function(id, callback){
+    api.del('/consumers/' + id, callback);
   };
 
   api.businesses = {};
@@ -194,8 +194,8 @@
     api.put('/businesses/' + id, business, callback);
   };
 
-  api.businesses.delete = function(id, callback){
-    api.delete('/businesses/' + id, callback);
+  api.businesses.del = function(id, callback){
+    api.del('/businesses/' + id, callback);
   };
 
   api.businesses.createContactEntry = function(info, callback){
@@ -230,7 +230,7 @@
   };
 
   api.collections.remove = function(uid, cid, pid, callback){
-    api.delete('/consumers/' + uid + '/collections/' + cid + '/products/' + pid, callback);
+    api.del('/consumers/' + uid + '/collections/' + cid + '/products/' + pid, callback);
   };
 
   api.collections.update = function(uid, cid, collection, callback){
@@ -244,7 +244,7 @@
     api.put('/consumers/' + uid + '/collections/' + cid, collection, callback);
   };
 
-  api.collections.delete = function(uid, cid, callback){
-    api.delete('/consumers/' + uid + '/collections/' + cid, callback);
+  api.collections.del = function(uid, cid, callback){
+    api.del('/consumers/' + uid + '/collections/' + cid, callback);
   };
 })(window);

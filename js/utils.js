@@ -1,8 +1,12 @@
 (function(){
   var utils = window.utils = window.utils || {};
 
-  utils.dom = $;
-  utils.domready = $;
+  if (jQuery.browser.msie) XMLHttpRequest = XDomainRequest;
+
+  utils.dom = jQuery;
+  utils.getScript = jQuery.getScript;
+  utils.domready = jQuery;
+  utils.support = jQuery.support;
   utils.compile = Handlebars.compile;
 
   utils.filter = function(set, fn){
@@ -51,6 +55,41 @@
     $.ajax(ajax);
   };
 
+  if (jQuery.browser.msie){
+    utils.ajax = function(method, url, data, callback){
+      // XDomainRequest uses lowercase method names
+      switch (method){
+        case "GET":     method = "get";     break;
+        case "POST":    method = "post";    break;
+        case "DELETE":  method = "del";     break;
+        case "PUT":     method = "put";     break;
+        case "PUT":     method = "patch";   break;
+      }
+
+      if (typeof data === "function"){
+        callback = data;
+        data = {};
+      }
+
+      if (method === "get"){
+        url += utils.queryParams(data);
+        data = null;
+      }
+
+      var req = new XDomainRequest();
+      req.open(method, url);
+      req.contentType = 'application/json';
+
+      req.onload = function(e){
+        if (req.responseText){
+          var res = JSON.parse(req.responseText);
+          callback(res.error, res.data, res.meta);
+        }
+      };
+      req.send(data && method != "get" ? JSON.stringify(data) : null);
+    }
+  }
+
   utils.get = function(url, params, callback){
     utils.ajax('get', url, params, callback);
     return utils
@@ -71,7 +110,7 @@
     return utils
   };
 
-  utils.delete = function(url, data, callback){
+  utils.del = function(url, data, callback){
     utils.ajax('delete', url, data, callback);
     return utils
   };
