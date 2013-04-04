@@ -112,8 +112,6 @@
     var $el = utils.dom(e.target).find('input').eq(0);
     if ($el.val() == "") return;
 
-    $el.val("");
-
     if (app.businessRequestTimeout) clearTimeout(app.businessRequestTimeout);
 
     var $label  = utils.dom('#biz-request-form label');
@@ -137,5 +135,7 @@
     });
 
     api.businesses.addRequest($el.val());
+
+    $el.val("");
   };
 })(window);
