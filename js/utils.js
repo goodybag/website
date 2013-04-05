@@ -78,7 +78,6 @@
       }
 
       var req = new XDomainRequest();
-      req.contentType = 'application/json';
 
       req.open(method, url);
 
