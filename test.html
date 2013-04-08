@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Goodybag.com</title>
+
+  <link media="all" rel="stylesheet" href="css/all.css">
+  <link media="all" rel="stylesheet" href="css/fancybox.css">
+
+  <!--[if IE]><script type="text/javascript" src="js/console.js"></script><![endif]-->
+  <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+  <!--[if IE]><script type="text/javascript" src="js/easyXDM.min.js"></script><![endif]-->
+  <script type="text/javascript" src="js/jquery.main.js"></script>
+  <!--[if IE]><script type="text/javascript" src="js/ie.js"></script><![endif]-->
+  <!--[if IE]><script type="text/javascript" src="js/json2.js"></script><![endif]-->
+  <script type="text/javascript" src="js/spin.min.js"></script>
+  <script type="text/javascript" src="js/handlebars.js"></script>
+  <script type="text/javascript" src="//use.typekit.net/vhr1yyf.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+  <script type="text/javascript" src="js/config.js"></script>
+  <script type="text/javascript" src="js/hbt-helpers.js"></script>
+  <script type="text/javascript" src="js/utils-test.js"></script>
+  <script type="text/javascript" src="js/api.js"></script>
+  <script type="text/javascript" src="js/templates.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/home.js"></script>
+
+  <script type="text/javascript">
+    config.baseUrl = 'http://magic.staging.goodybag.com/v1';
+    app.init();
+  </script>
+</head>
+<body>
+  <div id="wrapper">
+    <header id="header">
+      <div class="holder">
+        <h1 class="logo"><a href="/">Goodybag</a></h1>
+        <nav id="nav">
+          <ul>
+            <li><a href="how-it-works.html" class="works">How it Works</a></li>
+            <li><a href="locations.html" class="locations">Locations</a></li>
+            <li>
+              <a href="about-us.html" class="about">About</a>
+              <ul>
+                <li><a href="about-us.html">Goodybag</a></li>
+                <li><a href="biz-page.html">Goodybag for Businesses</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="legal.html">Legal</a></li>
+                <li><a href="charities.html">Charity</a></li>
+                <!--<li><a href="#">Contact</a></li>-->
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="buttons pre-login">
+          <a href="#facebook-popup-2" class="btn lightbox">Sign Up</a>
+          <a href="#facebook-popup" class="btn lightbox">Log In</a>
+          <span>or</span>
+          <a href="#" class="btn-facebook">Log In</a>
+        </div>
+        <div class="post-login user-header-info hide" id="user-info"></div>
+      </div>
+    </header>
+    <div class="gallery">
+      <div class="holder">
+        <div class="slideset">
+          <div class="slide slide-1">
+            <h2>Goodybag</h2>
+            <p>Earn rewards and support charities just by<br>shopping at your favorite businesses. </p>
+            <a href="#facebook-popup-2" class="btn lightbox">Get Started</a>
+            <img src="images/slide-1.png" alt="iamge description">
+          </div>
+          <div class="slide slide-2">
+            <img src="images/slide-2.png" alt="image description">
+            <div class="frame">
+              <a href="https://itunes.apple.com/ie/app/goodybag/id506924389?mt=8" class="btn">Download the app</a>
+              <p>Explore, collect and earn rewards with our new app!</p>
+              <a href="https://itunes.apple.com/ie/app/goodybag/id506924389?mt=8" class="app-store">Available on the App Store</a>
+            </div>
+          </div>
+          <div class="slide slide-3">
+            <img src="images/slide-3.png" alt="image description">
+            <div class="frame">
+              <h2>Check out the <strong>Instore tablet</strong></h2>
+              <p>Earn rewards and browse<br>featured items around town!</p>
+              <a href="locations.html" class="btn">View Locations</a>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="btn-prev">prev</a>
+        <a href="#" class="btn-next">next</a>
+      </div>
+    </div>
+    <section id="main">
+      <div class="holder">
+        <ul class="item-list" id="products-list"></ul>
+        <div class="spinner-wrap"></div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

@@ -64,7 +64,7 @@
   };
 
   api.products.feelings = function(id, feelings, callback){
-    api.put('/products/' + id + '/feelings', feelings, callback);
+    api.post('/products/' + id + '/feelings', feelings, callback);
   };
 
   api.products.del = function(id, callback){

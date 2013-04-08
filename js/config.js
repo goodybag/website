@@ -1,6 +1,4 @@
 (function(exports){
-  if (!window.console) console = { log: function(){}, error: function(){} };
-
   var config = exports.config = exports.config || {
     defaults: {
       spinner: {
@@ -24,6 +22,7 @@
     , infiniScrollHeight: 400
 
     , defaultName: 'Goodybagger'
+
     }
 
   , dev: {
@@ -31,6 +30,7 @@
     , oauth: {
         redirectUrl: 'http://localhost:8081'
       }
+    , proxyUrl: "http://localhost:3000/proxy.html"
     }
 
   , prod: {
@@ -38,6 +38,7 @@
     , oauth: {
         redirectUrl: 'http://www.goodybag.com'
       }
+    , proxyUrl: "http://magic.goodybag.com/proxy.html"
     }
   };
 
