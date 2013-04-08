@@ -1,17 +1,17 @@
 (function(){
   var utils = window.utils = window.utils || {};
 
-  if (jQuery.browser.msie) XMLHttpRequest = XDomainRequest;
-
   utils.dom = jQuery;
   utils.getScript = jQuery.getScript;
   utils.domready = jQuery;
   utils.support = jQuery.support;
   utils.compile = Handlebars.compile;
 
-  utils.rpc = new easyXDM.Rpc({ remote: config.proxyUrl }, {
-    remote: { request: {} }
-  });
+  if ($.browser.msie && $.browser.version < 10){
+    utils.rpc = new easyXDM.Rpc({ remote: config.proxyUrl }, {
+      remote: { request: {} }
+    });
+  }
 
 
   utils.filter = function(set, fn){
@@ -45,6 +45,8 @@
       type: method
     , method: method
     , url: url
+    , xhrFields: { withCredentials: true }
+    , crossDomain: true
     , success: function(results){
         if (typeof results == 'string') results = JSON.parse(results);
         results = results || {};
@@ -55,9 +57,14 @@
       }
     };
 
-    if ($.browser.msie) ajax.cache = false;
 
     if (data) ajax.data = data;
+
+    if ($.browser.msie){
+      ajax.cache = false;
+      delete ajax.xhrFields;
+      delete ajax.crossDomain;
+    }
 
     if ($.browser.msie && $.browser.version < 10) utils.rpc.request(ajax, ajax.success, ajax.error);
     else $.ajax(ajax);
