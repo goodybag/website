@@ -17,6 +17,14 @@
     app.startProductsSpinner()
     app.loadProducts();
     app.setupProductsInfiniScroll();
+
+    utils.dom('.get-started-btn').click(function(e){
+      e.preventDefault();
+      utils.dom.smoothScroll({
+        scrollTarget: '#main'
+      , offset: -60
+      });
+    });
   };
 
   app.startProductsSpinner = function(){
