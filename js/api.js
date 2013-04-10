@@ -199,7 +199,7 @@
   };
 
   api.businesses.createContactEntry = function(info, callback){
-    api.post('/businesses/contact-entries', info, callback);
+    api.post('/businesses/contact-requests', info, callback);
   };
 
   api.businesses.addRequest = function(name, callback){
