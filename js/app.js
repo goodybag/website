@@ -111,15 +111,18 @@
       templates.loginModal()
     , templates.signUpModal()
     , templates.resetPasswordModal()
+    , templates.forgotPasswordModal()
     );
 
     app.$loginForm = utils.dom('#login-form');
     app.$registerForm = utils.dom('#register-form');
     app.$resetPasswordForm = utils.dom('#reset-password-form');
+    app.$forgotPasswordForm = utils.dom('#forgot-password-form');
 
     app.$loginForm.submit(app.onLoginSubmit);
     app.$registerForm.submit(app.onRegisterSubmit);
     app.$resetPasswordForm.submit(app.onResetPasswordSubmit);
+    app.$forgotPasswordForm.submit(app.onForgotPasswordSubmit);
 
     utils.dom('a[href=#reset-password]').on('closed', function(e){window.location.href = '#';});
 
@@ -234,6 +237,31 @@
       window.location.href = '#';
       app.closeModals();
     });
+  }
+
+  app.onForgotPasswordSubmit = function(e) {
+    e.preventDefault();
+
+    app.$forgotPasswordForm.find('.field').removeClass('error');
+
+    var $email = app.$forgotPasswordForm.find('#forgot-email');
+
+    if ($email.val() === '')
+      return app.error({
+        message: 'You must supply an email'
+        , details: { "forgot-email": null }
+      }, app.$forgotPasswordForm);
+
+    var data = {
+      email: $email.val()
+    };
+
+    user.forgotPassword(data, function(error, result) {
+      if (error) return app.error(error, app.$forgotPasswordForm);
+
+      app.closeModals();
+    });
+
   }
 
   app.onFacebookBtnClick = function(e){
