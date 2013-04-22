@@ -105,4 +105,14 @@
       user.onDeAuth();
     });
   };
+
+  user.resetPassword = function(data, token, callback) {
+    var url = '/users/password-reset/' + token;
+    api.post(url, data, callback);
+  };
+
+  user.forgotPassword = function(data, callback) {
+    var url = '/users/password-reset';
+    api.post(url, data, callback);
+  }
 })(window);

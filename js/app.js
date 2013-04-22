@@ -20,6 +20,7 @@
     app.loadModals();
     jcf.customForms.replaceAll(); // Re-run form stuff for modals
     app.headerEvents();
+    app.checkForPasswordReset();
   };
 
   app.error = function(error, $el){
@@ -80,6 +81,15 @@
     });
   };
 
+  app.checkForPasswordReset = function() {
+    var match = /#reset-password\/(\w+)/g.exec(window.location.href);
+    if (match == null || match.length !== 2) return;
+    var token = match[1];
+    app.onResetPasswordSubmit.token = token;
+    window.location.href = '#password-reset';
+    app.openPasswordResetModal();
+  };
+
   app.openRegisterModal = function(){
     utils.dom('a[href="#facebook-popup-2"]').eq(0).trigger('click');
   };
@@ -87,6 +97,10 @@
   app.openLoginModal = function(){
     utils.dom('a[href="#facebook-popup"]').eq(0).trigger('click');
   };
+
+  app.openPasswordResetModal = function() {
+    utils.dom('a[href="#reset-password"]').eq(0).trigger('click');
+  }
 
   app.closeModals = function(){
     jQuery.fancybox.close();
@@ -96,13 +110,21 @@
     utils.dom(document.body).append(
       templates.loginModal()
     , templates.signUpModal()
+    , templates.resetPasswordModal()
+    , templates.forgotPasswordModal()
     );
 
     app.$loginForm = utils.dom('#login-form');
     app.$registerForm = utils.dom('#register-form');
+    app.$resetPasswordForm = utils.dom('#reset-password-form');
+    app.$forgotPasswordForm = utils.dom('#forgot-password-form');
 
     app.$loginForm.submit(app.onLoginSubmit);
     app.$registerForm.submit(app.onRegisterSubmit);
+    app.$resetPasswordForm.submit(app.onResetPasswordSubmit);
+    app.$forgotPasswordForm.submit(app.onForgotPasswordSubmit);
+
+    utils.dom('a[href=#reset-password]').on('closed', function(e){window.location.href = '#';});
 
     utils.dom('.popup-holder .btn-facebook').click(app.onFacebookBtnClick);
 
@@ -183,6 +205,65 @@
     });
   };
 
+  app.onResetPasswordSubmit = function(e) {
+    e.preventDefault();
+
+    app.$resetPasswordForm.find('.field').removeClass('error');
+
+    var $pass1 = app.$resetPasswordForm.find('#pass1');
+    var $pass2 = app.$resetPasswordForm.find('#pass2');
+
+    if ($pass1.val() !== $pass2.val())
+      return app.error({
+        message: 'Passwords must match'
+      , details: { pass1: null, pass2:null }
+      }, app.$resetPasswordForm);
+
+    if ($pass1.val() === '')
+      return app.error({
+        message: 'You must supply a password'
+      , details: { pass1: null, pass2:null }
+      }, app.$resetPasswordForm);
+
+    var data = {
+      password: $pass1.val()
+    };
+
+    $pass1.val('');
+    $pass2.val('');
+
+    user.resetPassword(data, app.onResetPasswordSubmit.token, function(error, result) {
+      if (error) return app.error(error, app.$resetPasswordForm);
+      window.location.href = '#';
+      app.closeModals();
+    });
+  }
+
+  app.onForgotPasswordSubmit = function(e) {
+    e.preventDefault();
+
+    app.$forgotPasswordForm.find('.field').removeClass('error');
+
+    var $email = app.$forgotPasswordForm.find('#forgot-email');
+
+    if ($email.val() === '')
+      return app.error({
+        message: 'You must supply an email'
+        , details: { "forgot-email": null }
+      }, app.$forgotPasswordForm);
+
+    var data = {
+      email: $email.val()
+    };
+
+    user.forgotPassword(data, function(error, result) {
+      if (error) return app.error(error, app.$forgotPasswordForm);
+
+      app.closeModals();
+    });
+
+  }
+
   app.onFacebookBtnClick = function(e){
     e.preventDefault();
 
@@ -205,4 +286,5 @@
     utils.dom('.post-login').addClass('hide');
     utils.dom('.pre-login').removeClass('hide');
   };
+
 })(window);
