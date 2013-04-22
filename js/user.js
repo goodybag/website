@@ -38,6 +38,11 @@
   }
 
   user.auth = function(email, password, remember, callback){
+    if (typeof remember === 'function' && callback == null) {
+      callback = remember;
+      remember = null;
+    }
+
     api.session.create(email, password, remember, function(error, result){
       if (error) return callback ? callback(error) : null;
 
