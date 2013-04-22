@@ -210,7 +210,13 @@
     if ($pass1.val() !== $pass2.val())
       return app.error({
         message: 'Passwords must match'
-      , details: { password: null }
+      , details: { pass1: null, pass2:null }
+      }, app.$resetPasswordForm);
+
+    if ($pass1.val() === ''))
+      return app.error({
+        message: 'You must supply a password'
+      , details: { pass1: null, pass2:null }
       }, app.$resetPasswordForm);
 
     var data = {
