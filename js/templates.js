@@ -132,4 +132,31 @@
   , '  <a href="#" class="logout">Logout</a>'
   , '</div>'
   ].join('\n');
+
+  templates.resetPasswordModal = [
+    '<div class="popup-holder">'
+  , '  <div class="login-box lightbox" id="reset-password">'
+  , '    <a href="#" class="close">close</a>'
+  , '    <h3>Reset Password</h3>'
+  , '    <form action="#" class="sign-form" id="reset-password-form">'
+  , '      <fieldset>'
+  , '        <div class="row">'
+  , '          <label for="pass1">New Password</label>'
+  , '          <div class="text">'
+  , '            <input type="password" class="field field-password" id="pass1" autofocus>'
+  , '          </div>'
+  , '        </div>'
+  , '        <div class="row">'
+  , '          <label for="pass2">Confirm New Password</label>'
+  , '          <div class="text">'
+  , '            <input type="password" class="field field-password" id="pass2">'
+  , '          </div>'
+  , '        </div>'
+  , '        <button><span>Reset</span></button>'
+  , '      </fieldset>'
+  , '    </form>'
+  , '  </div>'
+  , '</div>'
+  ].join('\n');
+
 })(window);
