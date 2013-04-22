@@ -213,7 +213,7 @@
       , details: { pass1: null, pass2:null }
       }, app.$resetPasswordForm);
 
-    if ($pass1.val() === ''))
+    if ($pass1.val() === '')
       return app.error({
         message: 'You must supply a password'
       , details: { pass1: null, pass2:null }
