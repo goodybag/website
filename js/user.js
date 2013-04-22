@@ -37,8 +37,8 @@
     }
   }
 
-  user.auth = function(email, password, callback){
-    api.session.create(email, password, function(error, result){
+  user.auth = function(email, password, remember, callback){
+    api.session.create(email, password, remember, function(error, result){
       if (error) return callback ? callback(error) : null;
 
       if (!result.id) return callback ? callback({ message: "Something went wrong :( " }) : null;
