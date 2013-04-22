@@ -48,7 +48,7 @@
     , xhrFields: { withCredentials: true }
     , crossDomain: true
     , success: function(results){
-        if (typeof results == 'string') results = JSON.parse(results);
+        if (typeof results == 'string' && results) results = JSON.parse(results);
         results = results || {};
         callback && callback(results.error, results.data, results.meta);
       }
