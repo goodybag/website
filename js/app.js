@@ -123,8 +123,10 @@
     var
       $email    = app.$loginForm.find('#user')
     , $password = app.$loginForm.find('#pass')
+    , $remember = app.$loginForm.find('#remember')
     , email     = $email.val()
     , password  = $password.val()
+    , remember  = $remember.is(':checked')
     ;
 
     $password.val("");
@@ -146,7 +148,7 @@
 
       if (isLoggedIn) return app.error("You're alraedy logged in!");
 
-      user.auth(email, password, function(error, result){
+      user.auth(email, password, remember, function(error, result){
         if (error) return app.error(error, app.$loginForm);
 
         app.closeModals();
