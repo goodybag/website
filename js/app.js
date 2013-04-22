@@ -86,6 +86,7 @@
     if (match == null || match.length !== 2) return;
     var token = match[1];
     app.onResetPasswordSubmit.token = token;
+    window.location.href = '#password-reset';
     app.openPasswordResetModal();
   };
 
@@ -119,6 +120,8 @@
     app.$loginForm.submit(app.onLoginSubmit);
     app.$registerForm.submit(app.onRegisterSubmit);
     app.$resetPasswordForm.submit(app.onResetPasswordSubmit);
+
+    utils.dom('a[href=#reset-password]').on('closed', function(e){window.location.href = '#';});
 
     utils.dom('.popup-holder .btn-facebook').click(app.onFacebookBtnClick);
 
@@ -228,7 +231,7 @@
 
     user.resetPassword(data, app.onResetPasswordSubmit.token, function(error, result) {
       if (error) return app.error(error, app.$resetPasswordForm);
-
+      window.location.href = '#';
       app.closeModals();
     });
   }
