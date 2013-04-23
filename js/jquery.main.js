@@ -47,7 +47,10 @@ function initLightbox($items) {
 						e.preventDefault();
 					});
 				}
-			}
+			},
+                        onClosed: function(){
+                          link.trigger('closed');
+                        }
 		});
 	});
 }
