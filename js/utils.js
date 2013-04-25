@@ -53,7 +53,14 @@
         callback && callback(results.error, results.data, results.meta);
       }
     , error: function(error, results, res, r){
-        callback && callback(error.responseText ? JSON.parse(error.responseText).error : error);
+        var e;
+        try {
+          e = error.responseText ? JSON.parse(error.responseText).error : error
+        } catch(err) {
+          e = error;
+        } finally {
+          if(typeof callback === 'function') callback(e);
+        }
       }
     };
 
