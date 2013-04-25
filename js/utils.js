@@ -111,6 +111,19 @@
     return params.substring(0, params.length - 1);
   };
 
-
+  utils.parseQueryParams = function() {
+    var params = {};
+    var match = /^\?(\S*)$/.exec(window.location.search);
+    if (match.length !== 2) return;
+    var pairs = match[1].split(/[&;]/);
+    pairs.map(function(e, i, arr){
+      var pair = e.split('=');
+      if (pair.length === 2)
+        this[pair[0]] = pair[1];
+      if (pair.length === 1)
+        this[pair[0]] = null;
+    }, params);
+    return params;
+  }
   utils.noop = function(){};
 })();

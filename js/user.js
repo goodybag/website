@@ -115,4 +115,14 @@
     var url = '/users/password-reset';
     api.post(url, data, callback);
   }
+
+  user.getPartialRegistrationEmail = function(token, callback) {
+    var url = '/users/complete-registration/' + token;
+    api.get(url, {}, callback);
+  }
+
+  user.completeRegistration = function(data, token, callback) {
+    var url = '/users/complete-registration/' + token;
+    api.post(url, data, callback);
+  }
 })(window);

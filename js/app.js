@@ -21,6 +21,7 @@
     jcf.customForms.replaceAll(); // Re-run form stuff for modals
     app.headerEvents();
     app.checkForPasswordReset();
+    app.checkForPartialRegistration();
   };
 
   app.error = function(error, $el){
@@ -75,10 +76,18 @@
     code = code.split('/#_=_')[0];
     code = code.split('#_=_')[0];
 
-    user.oauth(code, function(error){
+    var params = utils.parseQueryParams();
+
+    var callback = function(error){
       if (error && error.message) alert(error.message);
       if (error) alert(error);
-    });
+    }
+
+    if (params['partialRegistrationToken'] != null) {
+      user.completeRegistration({code:code}, params['partialRegistrationToken'], callback);
+    } else {
+      user.oauth(code, callback);
+    }
   };
 
   app.checkForPasswordReset = function() {
@@ -89,6 +98,15 @@
     window.location.href = '#password-reset';
     app.openPasswordResetModal();
   };
+
+  app.checkForPartialRegistration = function() {
+    var match = /#complete-registration\/(\w+)/g.exec(window.location.href);
+    if (match == null || match.length !== 2) return;
+    var token = match[1];
+    app.onPartialRegistrationSubmit.token = token;
+    window.location.href = '#complete-registration';
+    app.openPartialRegistrationModal(token);
+  }
 
   app.openRegisterModal = function(){
     utils.dom('a[href="#facebook-popup-2"]').eq(0).trigger('click');
@@ -102,6 +120,14 @@
     utils.dom('a[href="#reset-password"]').eq(0).trigger('click');
   }
 
+  app.openPartialRegistrationModal = function(token) {
+    utils.dom('a[href="#complete-registration"]').eq(0).trigger('click');
+    user.getPartialRegistrationEmail(token, function(error, results){
+      if (error != null || results == null) return;
+      app.$partialRegistrationForm.find('#email').val(results.email);
+    });
+  }
+
   app.closeModals = function(){
     jQuery.fancybox.close();
   };
@@ -112,21 +138,26 @@
     , templates.signUpModal()
     , templates.resetPasswordModal()
     , templates.forgotPasswordModal()
+    , templates.partialRegistrationModal()
     );
 
     app.$loginForm = utils.dom('#login-form');
     app.$registerForm = utils.dom('#register-form');
     app.$resetPasswordForm = utils.dom('#reset-password-form');
     app.$forgotPasswordForm = utils.dom('#forgot-password-form');
+    app.$partialRegistrationForm = utils.dom('#partial-registration-form');
 
     app.$loginForm.submit(app.onLoginSubmit);
     app.$registerForm.submit(app.onRegisterSubmit);
     app.$resetPasswordForm.submit(app.onResetPasswordSubmit);
     app.$forgotPasswordForm.submit(app.onForgotPasswordSubmit);
+    app.$partialRegistrationForm.submit(app.onPartialRegistrationSubmit);
 
     utils.dom('a[href=#reset-password]').on('closed', function(e){window.location.href = '#';});
+    utils.dom('a[href=#complete-registration]').on('closed', function(e){window.location.href = '#';});
 
-    utils.dom('.popup-holder .btn-facebook').click(app.onFacebookBtnClick);
+    utils.dom('.popup-holder .btn-facebook :not(.btn-facebook-partial)').click(app.onFacebookBtnClick);
+    utils.dom('.popup-holder .btn-facebook-partial').click(app.onFacebookPartialBtnClick);
 
     // Call PSD2HTML function
     initLightbox();
@@ -261,7 +292,44 @@
 
       app.closeModals();
     });
+  }
 
+  app.onPartialRegistrationSubmit = function(e) {
+    e.preventDefault();
+    app.$partialRegistrationForm.find('.field').removeClass('error');
+
+    var $password = app.$registerForm.find('#pass-1');
+
+    if ($password.val() != app.$partialRegistrationForm.find('#pass-2').val())
+      return app.error({
+        message: 'Passwords must match'
+      , details: { password: null }
+      }, app.$partialRegistrationForm);
+
+    var data = {
+      email:          app.$registerForm.find('#email').val()
+    , screenName:     app.$registerForm.find('#user-2').val()
+    , password:       $password.val()
+    };
+
+    app.$registerForm.find('input[type="password"]').val("");
+
+    user.completeRegistration(data, app.onPartialRegistrationSubmit.token, function() {
+      if (error) return app.error(error, app.$partialRegistrationForm);
+
+      app.closeModals();
+    });
+  }
+
+  app.onFacebookPartialBtnClick = function(e) {
+    e.preventDefault();
+
+    api.session.getOauthUrl(config.oauth.redirectUrl + '?partialRegistrationToken='+app.onPartialRegistrationSubmit.token, 'facebook', function(error, result){
+      if (error && error.message) return alert(error.message);
+      if (error) return alert(error);
+
+      window.location.href = result.url;
+    });
   }
 
   app.onFacebookBtnClick = function(e){
