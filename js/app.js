@@ -25,6 +25,9 @@
   };
 
   app.error = function(error, $el){
+    // No XHR errors - they probably just canceled the request
+    if (error.hasOwnProperty('status') && error.status == 0) return;
+
     if (error){
       var msg, detailsAdded = false;
       if (typeof error == "object")
