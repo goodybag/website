@@ -119,10 +119,10 @@
     for (var i=0, len=pairs.length; i < len; i++) {
       var pair = pairs[i].split('=');
       if (pair.length === 2)
-        this[pair[0]] = pair[1];
+        params[pair[0]] = pair[1];
       if (pair.length === 1)
-        this[pair[0]] = null;
-    }, params);
+        params[pair[0]] = null;
+    };
     return params;
   }
   utils.noop = function(){};
