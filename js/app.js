@@ -301,7 +301,7 @@
     e.preventDefault();
     app.$partialRegistrationForm.find('.field').removeClass('error');
 
-    var $password = app.$registerForm.find('#pass-1');
+    var $password = app.$partialRegistrationForm.find('#pass-1');
 
     if ($password.val() != app.$partialRegistrationForm.find('#pass-2').val())
       return app.error({
@@ -310,14 +310,14 @@
       }, app.$partialRegistrationForm);
 
     var data = {
-      email:          app.$registerForm.find('#email').val()
-    , screenName:     app.$registerForm.find('#user-2').val()
+      email:          app.$partialRegistrationForm.find('#email').val()
+    , screenName:     app.$partialRegistrationForm.find('#user-2').val()
     , password:       $password.val()
     };
 
     app.$registerForm.find('input[type="password"]').val("");
 
-    user.completeRegistration(data, app.onPartialRegistrationSubmit.token, function() {
+    user.completeRegistration(data, app.onPartialRegistrationSubmit.token, function(error, result) {
       if (error) return app.error(error, app.$partialRegistrationForm);
 
       app.closeModals();
