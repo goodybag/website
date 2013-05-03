@@ -73,13 +73,9 @@
   };
 
   app.checkForAccessCode = function(){
-    if (window.location.href.indexOf('code=') == -1) return;
-
-    var code = window.location.href.split('code=')[1];
-    code = code.split('/#_=_')[0];
-    code = code.split('#_=_')[0];
-
     var params = utils.parseQueryParams();
+    var code = params.code;
+    if (code == null) return;
 
     var callback = function(error){
       if (error && error.message) alert(error.message);
