@@ -114,7 +114,7 @@
   utils.parseQueryParams = function() {
     var params = {};
     var match = /^\?(\S*)$/.exec(window.location.search);
-    if (match.length !== 2) return;
+    if (match == null || match.length !== 2) return params;
     var pairs = match[1].split(/[&;]/);
     for (var i=0, len=pairs.length; i < len; i++) {
       var pair = pairs[i].split('=');
