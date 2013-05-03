@@ -37,6 +37,18 @@
     }
   }
 
+  var completeLogIn = function(result, callback) {
+    api.consumers.get(result.id, function(error, consumer){
+      if (error) return callback ? callback(error) : null;
+      for (var key in consumer)
+        result[key] = consumer[key];
+
+      user.save(result);
+      if (callback) callback(null, user.attributes);
+      user.onAuth(user.attributes, true);
+    });
+  }
+
   user.auth = function(email, password, remember, callback){
     if (typeof remember === 'function' && callback == null) {
       callback = remember;
@@ -48,17 +60,7 @@
 
       if (!result.id) return callback ? callback({ message: "Something went wrong :( " }) : null;
 
-      api.consumers.get(result.id, function(error, consumer){
-        if (error) return callback ? callback(error) : null;
-
-        for (var key in consumer){
-          result[key] = consumer[key];
-        }
-
-        user.save(result);
-        if (callback) callback(null, user.attributes);
-        user.onAuth(user.attributes, true);
-      });
+      completeLogIn(result, callback);
     });
   };
 
@@ -123,6 +125,9 @@
 
   user.completeRegistration = function(data, token, callback) {
     var url = '/users/complete-registration/' + token;
-    api.post(url, data, callback);
+    api.post(url, data, function(error, results){
+      if(error) return callback(error);
+      completeLogIn(results, callback);
+    });
   }
 })(window);
