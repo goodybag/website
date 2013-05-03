@@ -122,7 +122,7 @@
   app.openPartialRegistrationModal = function(token) {
     utils.dom('a[href="#complete-registration"]').eq(0).trigger('click');
     user.getPartialRegistrationEmail(token, function(error, results){
-      if (error != null || results == null) return;
+      if (error != null || results == null) return app.error(error, app.$partialRegistrationFrom), app.closeModals();
       app.$partialRegistrationForm.find('#email').val(results.email);
     });
   }
