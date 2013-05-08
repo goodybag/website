@@ -206,6 +206,21 @@
     api.post('/businesses/requests', { name: name }, callback);
   };
 
+  api.locations = {};
+
+  api.locations.list = function(options, callback){
+    if (typeof options === "function"){
+      callback = options;
+      options = null;
+    }
+
+    api.get('/locations', options, callback);
+  };
+
+  api.locations.get = function(id, options, callback){
+    api.get('/locations/' + id, options, callback);
+  };
+
   api.collections = {};
 
   api.collections.list = function(uid, options, callback){

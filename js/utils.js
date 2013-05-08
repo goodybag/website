@@ -106,7 +106,13 @@
     if (typeof data !== "object") return "";
     var params = "?";
     for (var key in data){
-      params += key + "=" + data[key] + "&";
+      if (Array.isArray(data[key])){
+        for (var i = 0, l = data[key].length; i < l; ++i){
+          params += key + "[]=" + data[key][i] + "&";
+        }
+      } else {
+        params += key + "=" + data[key] + "&";
+      }
     }
     return params.substring(0, params.length - 1);
   };
