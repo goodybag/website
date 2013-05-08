@@ -5,7 +5,7 @@
     '<li data-id="{{id}}" class="product-list-item">'
   , '  <header class="heading">'
   , '    <h2>{{#if name}}{{name}}{{else}}Awesome Product{{/if}}</h2>'
-  , '    <a href="#" class="hash">@ {{businessName}}</a>'
+  , '    <a href="#" class="hash" data-business-id="{{businessId}}">@ {{businessName}}</a>'
   , '  </header>'
   , '  <img src="{{filepicker photoUrl 240 240}}" width="240" height="240" alt="{{description}}" onerror="this.src = \'http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr/convert?w=240&h=240&fit=crop\'">'
   , '  <ul class="item-buttons">'

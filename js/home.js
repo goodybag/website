@@ -89,6 +89,66 @@
   app.applyProductsEvents = function($list){
     $list = $list || utils.dom('#products-list');
 
+    // Business Info - Replace Modal content
+    var $bizModal = utils.dom('#business-info');
+    var $bizModalAnchor = utils.dom('#business-info-anchor');
+    var $links = $list.find('.heading > a');
+
+    // Apply psd2html junk
+    // initLightbox($links);
+
+    // When you click the biz-modal link, replace content
+    $links.click(function(e){
+      e.preventDefault();
+
+      // Open modal
+      $bizModalAnchor.trigger('click');
+      // Stupid hack to make fancy box work the first click
+      // the rest of them don't even need this
+      setTimeout(function(){ $.fancybox.resize(); }, 500);
+      app.spinner.spin();
+
+      // Why the hell am I implementing async.parallel??!
+      var
+        id        = utils.dom(e.target).data('business-id')
+      , bail      = false
+      , results   = {}
+      , total     = 0
+      , current   = 0
+
+      , queue = {
+          locations:  function(done){ api.locations.list({ businessId: id }, done); }
+        , business:   function(done){ api.businesses.get(id, done); }
+        }
+
+      , complete = function(error, results){
+          if (error) return app.error(error);
+
+          results.business.locations = results.locations;
+
+          $bizModal.html( templates.businessModal(results.business) );
+        }
+
+      , getDoneFn = function(key){
+          return function(error, result){
+            if (bail) return;
+            if (error) return complete(error), bail = true;
+
+            results[key] = result;
+
+            if (++current >= total) return complete(null, results);
+          }
+        }
+      ;
+
+      for (var key in queue){
+        total++;
+        queue[key](getDoneFn(key));
+      }
+    });
+
+
+    // Like want try stuff
     $list.find('.item-buttons a').click(function(e){
       e.preventDefault();
 
