@@ -106,7 +106,7 @@
     if (typeof data !== "object") return "";
     var params = "?";
     for (var key in data){
-      if (Array.isArray(data[key])){
+      if (Object.prototype.toString.call(data) == '[object Array]'){
         for (var i = 0, l = data[key].length; i < l; ++i){
           params += key + "[]=" + data[key][i] + "&";
         }
