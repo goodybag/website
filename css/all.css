@@ -1511,10 +1511,12 @@ button::-moz-focus-inner{
 	margin-right: 12px;
 }
 
-#popup-1 .main-info.column {
+#popup-1 .main-info.column,
+#business-info .main-info.column {
 	width: 33%;
 }
-#popup-1 .right.column {
+#popup-1 .right.column,
+#business-info .right.column {
 	width: 66%;
 }
 
