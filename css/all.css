@@ -1518,6 +1518,10 @@ button::-moz-focus-inner{
 #popup-1 .right.column,
 #business-info .right.column {
 	width: 66%;
+
+	border-left: 1px solid #d8d8d8;
+	margin-left: -1px;
+	margin-bottom: 16px;
 }
 
 input.error {
