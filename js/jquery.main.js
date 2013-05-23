@@ -109,6 +109,17 @@ function initSlideBlocks($items){
 			topSlider.stop().animate({top: -topSliderHeight},{duration: animSpeed});
 			bottomSlider.stop().animate({bottom: bottomDistance},{duration: animSpeed});
 		});
+		item.click(function(){
+			if (item.hasClass('animated')){
+				item.removeClass('animated');
+				topSlider.stop().animate({top: -topSliderHeight},{duration: animSpeed});
+				bottomSlider.stop().animate({bottom: bottomDistance},{duration: animSpeed});
+			} else {
+				item.addClass('animated');
+				topSlider.stop().animate({top: 0},{duration: animSpeed});
+				bottomSlider.stop().animate({bottom: bottomOSliderPos},{duration: animSpeed});
+			}
+		});
 	});
 }
 
