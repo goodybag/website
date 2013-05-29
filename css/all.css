@@ -399,7 +399,7 @@ button::-moz-focus-inner{
 	width:1258px;
 	margin:0 auto;
 	overflow:hidden;
-	height:390px;
+	height:172px;
 }
 .gallery .btn-prev,
 .gallery .btn-next{
@@ -436,15 +436,23 @@ button::-moz-focus-inner{
 	text-align:center;
 }
 .gallery .slide-1 h2{
-	text-align:center;
-	font-size:74px;
-	line-height:80px;
-	font-weight:normal;
-	color:#29bae6;
-	margin:56px 0 4px;
-	text-shadow:0 1px 1px rgba(0,0,0,0.9);
+	text-align: center;
+	font-size: 48px;
+	line-height: 80px;
+	color: #00CDFA;
+	margin: 79px 0 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.7);
+	font-weight: 100;
+	text-transform: uppercase;
+	letter-spacing: -1px;
 }
-.gallery .slide-1 p{margin:0 0 19px;}
+.gallery .slide-1 p{
+	margin-top: -25px;
+	color: #F5EAD7;
+	font-size: 16px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+	font-weight: 300;
+}
 .gallery .btn{
 	display:block;
 	width:242px;
@@ -483,7 +491,8 @@ button::-moz-focus-inner{
 .gallery .slide-1 img{
 	position:absolute;
 	bottom:0;
-	left:226px;
+	left: 50%;
+	margin-left: -300px;
 }
 .gallery .slide-2 .btn{
 	width:262px;
@@ -1573,4 +1582,11 @@ input.error {
   position: absolute;
   top: 0;
   left: 191px;
+}
+
+.slide-text-wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
 }
