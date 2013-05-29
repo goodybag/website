@@ -1,6 +1,6 @@
 // page init
 jQuery(function(){
-	initCarousel();
+	// initCarousel();
 	initSlideBlocks();
 	initInputs();
 	initLightbox();
