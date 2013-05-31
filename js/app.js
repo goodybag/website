@@ -99,7 +99,8 @@
   };
 
   app.checkForPartialRegistration = function() {
-    var match = /#complete-registration\/(\w+)/g.exec(window.location.href);
+    var match = /complete-registration\/(\w+)/g.exec(window.location.href);
+    console.log(match);
     if (match == null || match.length !== 2) return;
     var token = match[1];
     app.onPartialRegistrationSubmit.token = token;
