@@ -440,14 +440,14 @@ button::-moz-focus-inner{
 	font-size: 48px;
 	line-height: 80px;
 	color: #00CDFA;
-	margin: 79px 0 4px;
+	margin: 90px 0 4px;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.7);
 	font-weight: 100;
 	text-transform: uppercase;
 	letter-spacing: -1px;
 }
 .gallery .slide-1 p{
-	margin-top: -25px;
+	margin-top: -29px;
 	color: #F5EAD7;
 	font-size: 16px;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
