@@ -196,11 +196,8 @@
   };
 
   app.onUserAuth = function(user, wasFromAuthing){
-    // If event was from actual authing and not a session grab
-    // Then reload the products list with proper userLikes and such
-    if (wasFromAuthing) app.reloadProducts();
-
-    _onUserAuth();
+    // Redirect to the panel
+    window.location.href = '/panel/#/explore/popular';
   };
 
   app.onUserDeAuth = function(){
