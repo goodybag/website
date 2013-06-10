@@ -39,12 +39,21 @@
       }
     , proxyUrl: "http://magic.goodybag.com/proxy.html"
     }
+
+  , staging: {
+      baseUrl: 'http://magic.staging.goodybag.com/v1'
+    , oauth: {
+        redirectUrl: 'http://www.staging.goodybag.com'
+      }
+    , proxyUrl: "http://magic.staging.goodybag.com/proxy.html"
+    }
   };
 
   for (var key in config.defaults){
     if (!(key in config.dev)) config.dev[key]   = config.defaults[key];
     if (!(key in config.prod)) config.prod[key] = config.defaults[key];
+    if (!(key in config.staging)) config.staging[key] = config.defaults[key];
   }
 
-  exports.config = config.prod;
+  exports.config = config.staging;
 })(window);
