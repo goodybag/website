@@ -55,5 +55,5 @@
     if (!(key in config.staging)) config.staging[key] = config.defaults[key];
   }
 
-  exports.config = config.staging;
+  exports.config = config.prod;
 })(window);
