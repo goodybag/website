@@ -344,6 +344,7 @@
   };
 
   app.onUserAuth = function(){
+    // Pre-panel behavior
     app.loadUserHeader();
     app.applyUserHeaderEvents();
     utils.dom('.pre-login').addClass('hide');
